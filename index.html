@@ -12,8 +12,8 @@
     html, body { background: #0a0a0f; color: #fff; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; min-height: 100vh; }
     input, button { font-family: inherit; }
     ::-webkit-scrollbar { width: 4px; }
-    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 99px; }
-    ::placeholder { color: rgba(255,255,255,0.25); }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 99px; }
+    ::placeholder { color: rgba(255,255,255,0.3); }
   </style>
 </head>
 <body>
@@ -76,6 +76,7 @@
       { id: "soria", nombre: "Soria", hm3: 380, capacidad: 460, hace1year: 320, media10: 350 },
       { id: "segovia", nombre: "Segovia", hm3: 310, capacidad: 370, hace1year: 260, media10: 285 },
       { id: "avila", nombre: "Ávila", hm3: 432, capacidad: 520, hace1year: 370, media10: 395 },
+      { id: "palencia", nombre: "Palencia", hm3: 290, capacidad: 340, hace1year: 250, media10: 270 },
       { id: "cuenca", nombre: "Cuenca", hm3: 2630, capacidad: 2960, hace1year: 2380, media10: 2190 },
       { id: "guadalajara", nombre: "Guadalajara", hm3: 1240, capacidad: 1380, hace1year: 1100, media10: 1060 },
       { id: "toledo", nombre: "Toledo", hm3: 980, capacidad: 1420, hace1year: 860, media10: 920 },
@@ -104,41 +105,160 @@
     ];
 
     const EMBALSES = [
+      // GUADIANA
       { id: 1, nombre: "La Serena", cuenca: "Guadiana", ccaa: "Extremadura", provincia: "Badajoz", hm3: 2920, capacidad: 3219, hace1year: 3041, media10: 2140 },
-      { id: 2, nombre: "Alcántara (José M. Oriol)", cuenca: "Tajo", ccaa: "Extremadura", provincia: "Cáceres", hm3: 2424, capacidad: 3162, hace1year: 2680, media10: 2100 },
-      { id: 3, nombre: "Almendra", cuenca: "Duero", ccaa: "Castilla y León", provincia: "Salamanca", hm3: 2648, capacidad: 2648, hace1year: 2200, media10: 2190 },
-      { id: 4, nombre: "Buendía", cuenca: "Tajo", ccaa: "Castilla-La Mancha", provincia: "Cuenca", hm3: 1586, capacidad: 1638, hace1year: 1490, media10: 1280 },
-      { id: 5, nombre: "Cijara", cuenca: "Guadiana", ccaa: "Extremadura", provincia: "Badajoz", hm3: 1422, capacidad: 1670, hace1year: 1280, media10: 1150 },
-      { id: 6, nombre: "García de Sola (Puerto Peña)", cuenca: "Guadiana", ccaa: "Extremadura", provincia: "Badajoz", hm3: 894, capacidad: 1101, hace1year: 780, media10: 820 },
-      { id: 7, nombre: "Bornos", cuenca: "Guadalete-Barbate", ccaa: "Andalucía", provincia: "Cádiz", hm3: 187, capacidad: 239, hace1year: 156, media10: 171 },
-      { id: 8, nombre: "Contreras", cuenca: "Júcar", ccaa: "Castilla-La Mancha", provincia: "Cuenca", hm3: 784, capacidad: 852, hace1year: 640, media10: 710 },
-      { id: 9, nombre: "Mequinenza", cuenca: "Ebro", ccaa: "Aragón", provincia: "Zaragoza", hm3: 1282, capacidad: 1534, hace1year: 1180, media10: 1230 },
-      { id: 10, nombre: "Ribarroja", cuenca: "Ebro", ccaa: "Cataluña", provincia: "Tarragona", hm3: 202, capacidad: 207, hace1year: 190, media10: 198 },
-      { id: 11, nombre: "El Atazar", cuenca: "Tajo", ccaa: "Madrid", provincia: "Madrid", hm3: 374, capacidad: 426, hace1year: 312, media10: 340 },
-      { id: 12, nombre: "Porma (Juan Benet)", cuenca: "Duero", ccaa: "Castilla y León", provincia: "León", hm3: 315, capacidad: 317, hace1year: 280, media10: 270 },
-      { id: 13, nombre: "Valdecañas", cuenca: "Tajo", ccaa: "Extremadura", provincia: "Cáceres", hm3: 1446, capacidad: 1446, hace1year: 1290, media10: 1180 },
-      { id: 14, nombre: "Orellana", cuenca: "Guadiana", ccaa: "Extremadura", provincia: "Badajoz", hm3: 796, capacidad: 864, hace1year: 710, media10: 620 },
-      { id: 15, nombre: "Canales", cuenca: "C. Mediterráneas Andaluzas", ccaa: "Andalucía", provincia: "Granada", hm3: 61, capacidad: 70, hace1year: 48, media10: 52 },
-      { id: 16, nombre: "Iznájar", cuenca: "Guadalquivir", ccaa: "Andalucía", provincia: "Córdoba", hm3: 890, capacidad: 981, hace1year: 820, media10: 730 },
-      { id: 17, nombre: "Tranco de Beas", cuenca: "Guadalquivir", ccaa: "Andalucía", provincia: "Jaén", hm3: 486, capacidad: 500, hace1year: 420, media10: 390 },
-      { id: 18, nombre: "Entrepeñas", cuenca: "Tajo", ccaa: "Castilla-La Mancha", provincia: "Guadalajara", hm3: 803, capacidad: 835, hace1year: 740, media10: 680 },
-      { id: 19, nombre: "Ricobayo", cuenca: "Duero", ccaa: "Castilla y León", provincia: "Zamora", hm3: 1122, capacidad: 1194, hace1year: 980, media10: 1040 },
-      { id: 20, nombre: "Yesa", cuenca: "Ebro", ccaa: "Aragón", provincia: "Zaragoza", hm3: 442, capacidad: 447, hace1year: 390, media10: 360 },
-      { id: 21, nombre: "Mediano", cuenca: "Ebro", ccaa: "Aragón", provincia: "Huesca", hm3: 371, capacidad: 436, hace1year: 320, media10: 340 },
-      { id: 22, nombre: "Santillana", cuenca: "Tajo", ccaa: "Madrid", provincia: "Madrid", hm3: 85, capacidad: 91, hace1year: 74, media10: 79 },
-      { id: 23, nombre: "Proserpina", cuenca: "Guadiana", ccaa: "Extremadura", provincia: "Badajoz", hm3: 5, capacidad: 7, hace1year: 4, media10: 5 },
-      { id: 24, nombre: "Guadalmena", cuenca: "Guadalquivir", ccaa: "Andalucía", provincia: "Jaén", hm3: 910, capacidad: 910, hace1year: 790, media10: 720 },
-      { id: 25, nombre: "Beninar", cuenca: "C. Mediterráneas Andaluzas", ccaa: "Andalucía", provincia: "Almería", hm3: 38, capacidad: 55, hace1year: 29, media10: 33 },
-      { id: 26, nombre: "La Baells", cuenca: "Cuencas Internas Cataluña", ccaa: "Cataluña", provincia: "Barcelona", hm3: 85, capacidad: 109, hace1year: 68, media10: 79 },
-      { id: 27, nombre: "Sau", cuenca: "Cuencas Internas Cataluña", ccaa: "Cataluña", provincia: "Barcelona", hm3: 136, capacidad: 168, hace1year: 108, media10: 124 },
-      { id: 28, nombre: "Itoiz", cuenca: "Ebro", ccaa: "Navarra", provincia: "Navarra", hm3: 354, capacidad: 418, hace1year: 310, media10: 330 },
-      { id: 29, nombre: "Gabriel y Galán", cuenca: "Tajo", ccaa: "Extremadura", provincia: "Cáceres", hm3: 849, capacidad: 925, hace1year: 760, media10: 710 },
-      { id: 30, nombre: "Bembézar", cuenca: "Guadalquivir", ccaa: "Andalucía", provincia: "Córdoba", hm3: 544, capacidad: 606, hace1year: 480, media10: 430 },
-      { id: 31, nombre: "Guadalcacín", cuenca: "Guadalete-Barbate", ccaa: "Andalucía", provincia: "Cádiz", hm3: 621, capacidad: 858, hace1year: 528, media10: 510 },
-      { id: 32, nombre: "Tous", cuenca: "Júcar", ccaa: "Comunitat Valenciana", provincia: "Valencia", hm3: 54, capacidad: 73, hace1year: 44, media10: 52 },
-      { id: 33, nombre: "Urdalur", cuenca: "Cantábrico", ccaa: "País Vasco", provincia: "Álava", hm3: 8, capacidad: 9, hace1year: 8, media10: 8 },
-      { id: 34, nombre: "El Vicario", cuenca: "Guadiana", ccaa: "Castilla-La Mancha", provincia: "Ciudad Real", hm3: 37, capacidad: 55, hace1year: 30, media10: 38 },
-      { id: 35, nombre: "Rosarito", cuenca: "Tajo", ccaa: "Extremadura", provincia: "Cáceres", hm3: 465, capacidad: 492, hace1year: 410, media10: 380 },
+      { id: 2, nombre: "Cijara", cuenca: "Guadiana", ccaa: "Extremadura", provincia: "Badajoz", hm3: 1422, capacidad: 1670, hace1year: 1280, media10: 1150 },
+      { id: 3, nombre: "García de Sola", cuenca: "Guadiana", ccaa: "Extremadura", provincia: "Badajoz", hm3: 894, capacidad: 1101, hace1year: 780, media10: 820 },
+      { id: 4, nombre: "Orellana", cuenca: "Guadiana", ccaa: "Extremadura", provincia: "Badajoz", hm3: 796, capacidad: 864, hace1year: 710, media10: 620 },
+      { id: 5, nombre: "Zújar", cuenca: "Guadiana", ccaa: "Extremadura", provincia: "Badajoz", hm3: 307, capacidad: 309, hace1year: 285, media10: 241 },
+      { id: 6, nombre: "Proserpina", cuenca: "Guadiana", ccaa: "Extremadura", provincia: "Badajoz", hm3: 5, capacidad: 7, hace1year: 4, media10: 5 },
+      { id: 7, nombre: "Cornalvo", cuenca: "Guadiana", ccaa: "Extremadura", provincia: "Badajoz", hm3: 11, capacidad: 20, hace1year: 9, media10: 13 },
+      { id: 8, nombre: "El Vicario", cuenca: "Guadiana", ccaa: "Castilla-La Mancha", provincia: "Ciudad Real", hm3: 37, capacidad: 55, hace1year: 30, media10: 38 },
+      { id: 9, nombre: "Peñarroya", cuenca: "Guadiana", ccaa: "Castilla-La Mancha", provincia: "Ciudad Real", hm3: 41, capacidad: 49, hace1year: 35, media10: 38 },
+      // TAJO
+      { id: 10, nombre: "Alcántara (José M. Oriol)", cuenca: "Tajo", ccaa: "Extremadura", provincia: "Cáceres", hm3: 2424, capacidad: 3162, hace1year: 2680, media10: 2100 },
+      { id: 11, nombre: "Valdecañas", cuenca: "Tajo", ccaa: "Extremadura", provincia: "Cáceres", hm3: 1446, capacidad: 1446, hace1year: 1290, media10: 1180 },
+      { id: 12, nombre: "Gabriel y Galán", cuenca: "Tajo", ccaa: "Extremadura", provincia: "Cáceres", hm3: 849, capacidad: 925, hace1year: 760, media10: 710 },
+      { id: 13, nombre: "Rosarito", cuenca: "Tajo", ccaa: "Extremadura", provincia: "Cáceres", hm3: 465, capacidad: 492, hace1year: 410, media10: 380 },
+      { id: 14, nombre: "Borbollón", cuenca: "Tajo", ccaa: "Extremadura", provincia: "Cáceres", hm3: 98, capacidad: 107, hace1year: 87, media10: 82 },
+      { id: 15, nombre: "Buendía", cuenca: "Tajo", ccaa: "Castilla-La Mancha", provincia: "Cuenca", hm3: 1586, capacidad: 1638, hace1year: 1490, media10: 1280 },
+      { id: 16, nombre: "Entrepeñas", cuenca: "Tajo", ccaa: "Castilla-La Mancha", provincia: "Guadalajara", hm3: 803, capacidad: 835, hace1year: 740, media10: 680 },
+      { id: 17, nombre: "El Atazar", cuenca: "Tajo", ccaa: "Madrid", provincia: "Madrid", hm3: 374, capacidad: 426, hace1year: 312, media10: 340 },
+      { id: 18, nombre: "Santillana", cuenca: "Tajo", ccaa: "Madrid", provincia: "Madrid", hm3: 85, capacidad: 91, hace1year: 74, media10: 79 },
+      { id: 19, nombre: "El Vado", cuenca: "Tajo", ccaa: "Castilla-La Mancha", provincia: "Guadalajara", hm3: 55, capacidad: 57, hace1year: 48, media10: 50 },
+      { id: 20, nombre: "Beleña", cuenca: "Tajo", ccaa: "Castilla-La Mancha", provincia: "Guadalajara", hm3: 52, capacidad: 53, hace1year: 43, media10: 46 },
+      { id: 21, nombre: "La Tajera", cuenca: "Tajo", ccaa: "Castilla-La Mancha", provincia: "Guadalajara", hm3: 79, capacidad: 83, hace1year: 68, media10: 70 },
+      { id: 22, nombre: "Valmayor", cuenca: "Tajo", ccaa: "Madrid", provincia: "Madrid", hm3: 112, capacidad: 124, hace1year: 98, media10: 104 },
+      { id: 23, nombre: "Picadas", cuenca: "Tajo", ccaa: "Madrid", provincia: "Madrid", hm3: 32, capacidad: 34, hace1year: 27, media10: 29 },
+      // DUERO
+      { id: 24, nombre: "Almendra", cuenca: "Duero", ccaa: "Castilla y León", provincia: "Salamanca", hm3: 2648, capacidad: 2648, hace1year: 2200, media10: 2190 },
+      { id: 25, nombre: "Ricobayo", cuenca: "Duero", ccaa: "Castilla y León", provincia: "Zamora", hm3: 1122, capacidad: 1194, hace1year: 980, media10: 1040 },
+      { id: 26, nombre: "Porma (Juan Benet)", cuenca: "Duero", ccaa: "Castilla y León", provincia: "León", hm3: 315, capacidad: 317, hace1year: 280, media10: 270 },
+      { id: 27, nombre: "Riaño", cuenca: "Duero", ccaa: "Castilla y León", provincia: "León", hm3: 642, capacidad: 664, hace1year: 570, media10: 550 },
+      { id: 28, nombre: "Barrios de Luna", cuenca: "Duero", ccaa: "Castilla y León", provincia: "León", hm3: 305, capacidad: 308, hace1year: 265, media10: 255 },
+      { id: 29, nombre: "Campañana (San Román)", cuenca: "Duero", ccaa: "Castilla y León", provincia: "Zamora", hm3: 58, capacidad: 60, hace1year: 52, media10: 50 },
+      { id: 30, nombre: "Villalcampo", cuenca: "Duero", ccaa: "Castilla y León", provincia: "Zamora", hm3: 82, capacidad: 96, hace1year: 72, media10: 78 },
+      { id: 31, nombre: "Castro", cuenca: "Duero", ccaa: "Castilla y León", provincia: "Zamora", hm3: 60, capacidad: 63, hace1year: 54, media10: 56 },
+      { id: 32, nombre: "Linares del Arroyo", cuenca: "Duero", ccaa: "Castilla y León", provincia: "Segovia", hm3: 58, capacidad: 60, hace1year: 51, media10: 52 },
+      { id: 33, nombre: "Aguilar de Campoo", cuenca: "Duero", ccaa: "Castilla y León", provincia: "Palencia", hm3: 234, capacidad: 247, hace1year: 204, media10: 196 },
+      { id: 34, nombre: "Cervera", cuenca: "Duero", ccaa: "Castilla y León", provincia: "Palencia", hm3: 16, capacidad: 18, hace1year: 14, media10: 15 },
+      { id: 35, nombre: "Requejada", cuenca: "Duero", ccaa: "Castilla y León", provincia: "Palencia", hm3: 89, capacidad: 91, hace1year: 78, media10: 76 },
+      { id: 36, nombre: "Compuerto", cuenca: "Duero", ccaa: "Castilla y León", provincia: "Palencia", hm3: 89, capacidad: 95, hace1year: 78, media10: 79 },
+      { id: 37, nombre: "Cuerda del Pozo", cuenca: "Duero", ccaa: "Castilla y León", provincia: "Soria", hm3: 201, capacidad: 231, hace1year: 175, media10: 165 },
+      { id: 38, nombre: "La Cuerda del Pozo", cuenca: "Duero", ccaa: "Castilla y León", provincia: "Soria", hm3: 201, capacidad: 231, hace1year: 175, media10: 165 },
+      { id: 39, nombre: "Valdeparado", cuenca: "Duero", ccaa: "Castilla y León", provincia: "Soria", hm3: 15, capacidad: 16, hace1year: 13, media10: 13 },
+      { id: 40, nombre: "Santa Teresa", cuenca: "Duero", ccaa: "Castilla y León", provincia: "Salamanca", hm3: 401, capacidad: 496, hace1year: 350, media10: 325 },
+      { id: 41, nombre: "Burgomillodo", cuenca: "Duero", ccaa: "Castilla y León", provincia: "Segovia", hm3: 12, capacidad: 14, hace1year: 10, media10: 11 },
+      // EBRO
+      { id: 42, nombre: "Mequinenza", cuenca: "Ebro", ccaa: "Aragón", provincia: "Zaragoza", hm3: 1282, capacidad: 1534, hace1year: 1180, media10: 1230 },
+      { id: 43, nombre: "Yesa", cuenca: "Ebro", ccaa: "Aragón", provincia: "Zaragoza", hm3: 442, capacidad: 447, hace1year: 390, media10: 360 },
+      { id: 44, nombre: "Mediano", cuenca: "Ebro", ccaa: "Aragón", provincia: "Huesca", hm3: 371, capacidad: 436, hace1year: 320, media10: 340 },
+      { id: 45, nombre: "Ribarroja", cuenca: "Ebro", ccaa: "Cataluña", provincia: "Tarragona", hm3: 202, capacidad: 207, hace1year: 190, media10: 198 },
+      { id: 46, nombre: "Itoiz", cuenca: "Ebro", ccaa: "Navarra", provincia: "Navarra", hm3: 354, capacidad: 418, hace1year: 310, media10: 330 },
+      { id: 47, nombre: "El Grado", cuenca: "Ebro", ccaa: "Aragón", provincia: "Huesca", hm3: 380, capacidad: 399, hace1year: 330, media10: 310 },
+      { id: 48, nombre: "Vadiello", cuenca: "Ebro", ccaa: "Aragón", provincia: "Huesca", hm3: 14, capacidad: 16, hace1year: 12, media10: 13 },
+      { id: 49, nombre: "Canelles", cuenca: "Ebro", ccaa: "Aragón", provincia: "Huesca", hm3: 430, capacidad: 679, hace1year: 375, media10: 400 },
+      { id: 50, nombre: "Santa Ana", cuenca: "Ebro", ccaa: "Aragón", provincia: "Huesca", hm3: 232, capacidad: 237, hace1year: 202, media10: 195 },
+      { id: 51, nombre: "Búbal", cuenca: "Ebro", ccaa: "Aragón", provincia: "Huesca", hm3: 54, capacidad: 62, hace1year: 47, media10: 50 },
+      { id: 52, nombre: "Lanuza", cuenca: "Ebro", ccaa: "Aragón", provincia: "Huesca", hm3: 16, capacidad: 17, hace1year: 14, media10: 14 },
+      { id: 53, nombre: "Sotonera", cuenca: "Ebro", ccaa: "Aragón", provincia: "Huesca", hm3: 170, capacidad: 189, hace1year: 148, media10: 142 },
+      { id: 54, nombre: "Alloz", cuenca: "Ebro", ccaa: "Navarra", provincia: "Navarra", hm3: 57, capacidad: 66, hace1year: 49, media10: 51 },
+      { id: 55, nombre: "Eugui", cuenca: "Ebro", ccaa: "Navarra", provincia: "Navarra", hm3: 18, capacidad: 22, hace1year: 16, media10: 17 },
+      { id: 56, nombre: "Irabia", cuenca: "Ebro", ccaa: "Navarra", provincia: "Navarra", hm3: 10, capacidad: 11, hace1year: 9, media10: 10 },
+      { id: 57, nombre: "Ullibarri-Gamboa", cuenca: "Ebro", ccaa: "País Vasco", provincia: "Álava", hm3: 137, capacidad: 147, hace1year: 119, media10: 121 },
+      { id: 58, nombre: "Urrúnaga", cuenca: "Ebro", ccaa: "País Vasco", provincia: "Álava", hm3: 66, capacidad: 72, hace1year: 57, media10: 59 },
+      { id: 59, nombre: "Mansilla", cuenca: "Ebro", ccaa: "La Rioja", provincia: "La Rioja", hm3: 52, capacidad: 68, hace1year: 45, media10: 47 },
+      { id: 60, nombre: "González Lacasa", cuenca: "Ebro", ccaa: "La Rioja", provincia: "La Rioja", hm3: 32, capacidad: 35, hace1year: 27, media10: 28 },
+      { id: 61, nombre: "Pajares", cuenca: "Ebro", ccaa: "La Rioja", provincia: "La Rioja", hm3: 34, capacidad: 35, hace1year: 29, media10: 30 },
+      { id: 62, nombre: "Ebro (embalse)", cuenca: "Ebro", ccaa: "Cantabria", provincia: "Cantabria", hm3: 447, capacidad: 540, hace1year: 390, media10: 405 },
+      { id: 63, nombre: "Gabiria", cuenca: "Ebro", ccaa: "País Vasco", provincia: "Guipúzcoa", hm3: 6, capacidad: 7, hace1year: 5, media10: 6 },
+      // GUADALQUIVIR
+      { id: 64, nombre: "Iznájar", cuenca: "Guadalquivir", ccaa: "Andalucía", provincia: "Córdoba", hm3: 890, capacidad: 981, hace1year: 820, media10: 730 },
+      { id: 65, nombre: "Tranco de Beas", cuenca: "Guadalquivir", ccaa: "Andalucía", provincia: "Jaén", hm3: 486, capacidad: 500, hace1year: 420, media10: 390 },
+      { id: 66, nombre: "Guadalmena", cuenca: "Guadalquivir", ccaa: "Andalucía", provincia: "Jaén", hm3: 910, capacidad: 910, hace1year: 790, media10: 720 },
+      { id: 67, nombre: "Bembézar", cuenca: "Guadalquivir", ccaa: "Andalucía", provincia: "Córdoba", hm3: 544, capacidad: 606, hace1year: 480, media10: 430 },
+      { id: 68, nombre: "Malpasillo", cuenca: "Guadalquivir", ccaa: "Andalucía", provincia: "Córdoba", hm3: 98, capacidad: 130, hace1year: 85, media10: 95 },
+      { id: 69, nombre: "La Breña II", cuenca: "Guadalquivir", ccaa: "Andalucía", provincia: "Córdoba", hm3: 780, capacidad: 823, hace1year: 680, media10: 610 },
+      { id: 70, nombre: "Puente Nuevo", cuenca: "Guadalquivir", ccaa: "Andalucía", provincia: "Córdoba", hm3: 194, capacidad: 194, hace1year: 169, media10: 152 },
+      { id: 71, nombre: "El Carpio", cuenca: "Guadalquivir", ccaa: "Andalucía", provincia: "Córdoba", hm3: 18, capacidad: 21, hace1year: 15, media10: 16 },
+      { id: 72, nombre: "Encinarejo", cuenca: "Guadalquivir", ccaa: "Andalucía", provincia: "Córdoba", hm3: 11, capacidad: 11, hace1year: 9, media10: 9 },
+      { id: 73, nombre: "Jándula", cuenca: "Guadalquivir", ccaa: "Andalucía", provincia: "Jaén", hm3: 316, capacidad: 322, hace1year: 275, media10: 248 },
+      { id: 74, nombre: "El Rumblar", cuenca: "Guadalquivir", ccaa: "Andalucía", provincia: "Jaén", hm3: 99, capacidad: 127, hace1year: 86, media10: 90 },
+      { id: 75, nombre: "Doña Aldonza", cuenca: "Guadalquivir", ccaa: "Andalucía", provincia: "Jaén", hm3: 88, capacidad: 92, hace1year: 76, media10: 71 },
+      { id: 76, nombre: "Giribaile", cuenca: "Guadalquivir", ccaa: "Andalucía", provincia: "Jaén", hm3: 395, capacidad: 477, hace1year: 344, media10: 315 },
+      { id: 77, nombre: "Valdeinfierno", cuenca: "Guadalquivir", ccaa: "Andalucía", provincia: "Jaén", hm3: 26, capacidad: 26, hace1year: 22, media10: 20 },
+      { id: 78, nombre: "Colomera", cuenca: "Guadalquivir", ccaa: "Andalucía", provincia: "Granada", hm3: 26, capacidad: 36, hace1year: 22, media10: 23 },
+      { id: 79, nombre: "Cubillas", cuenca: "Guadalquivir", ccaa: "Andalucía", provincia: "Granada", hm3: 46, capacidad: 46, hace1year: 40, media10: 36 },
+      { id: 80, nombre: "Francisco Abellán", cuenca: "Guadalquivir", ccaa: "Andalucía", provincia: "Granada", hm3: 58, capacidad: 77, hace1year: 50, media10: 52 },
+      { id: 81, nombre: "Quéntar", cuenca: "Guadalquivir", ccaa: "Andalucía", provincia: "Granada", hm3: 12, capacidad: 13, hace1year: 10, media10: 10 },
+      { id: 82, nombre: "Rules", cuenca: "Guadalquivir", ccaa: "Andalucía", provincia: "Granada", hm3: 97, capacidad: 110, hace1year: 84, media10: 79 },
+      { id: 83, nombre: "El Pintado", cuenca: "Guadalquivir", ccaa: "Andalucía", provincia: "Sevilla", hm3: 366, capacidad: 439, hace1year: 319, media10: 283 },
+      { id: 84, nombre: "Aracena", cuenca: "Guadalquivir", ccaa: "Andalucía", provincia: "Huelva", hm3: 110, capacidad: 127, hace1year: 95, media10: 95 },
+      { id: 85, nombre: "Zufre", cuenca: "Guadalquivir", ccaa: "Andalucía", provincia: "Huelva", hm3: 152, capacidad: 168, hace1year: 132, media10: 119 },
+      // GUADALETE-BARBATE
+      { id: 86, nombre: "Guadalcacín", cuenca: "Guadalete-Barbate", ccaa: "Andalucía", provincia: "Cádiz", hm3: 621, capacidad: 858, hace1year: 528, media10: 510 },
+      { id: 87, nombre: "Bornos", cuenca: "Guadalete-Barbate", ccaa: "Andalucía", provincia: "Cádiz", hm3: 187, capacidad: 239, hace1year: 156, media10: 171 },
+      { id: 88, nombre: "Arcos", cuenca: "Guadalete-Barbate", ccaa: "Andalucía", provincia: "Cádiz", hm3: 23, capacidad: 25, hace1year: 19, media10: 19 },
+      { id: 89, nombre: "Zahara-El Gastor", cuenca: "Guadalete-Barbate", ccaa: "Andalucía", provincia: "Cádiz", hm3: 154, capacidad: 215, hace1year: 131, media10: 130 },
+      { id: 90, nombre: "Barbate", cuenca: "Guadalete-Barbate", ccaa: "Andalucía", provincia: "Cádiz", hm3: 156, capacidad: 229, hace1year: 133, media10: 121 },
+      { id: 91, nombre: "Celemín", cuenca: "Guadalete-Barbate", ccaa: "Andalucía", provincia: "Cádiz", hm3: 96, capacidad: 96, hace1year: 81, media10: 79 },
+      { id: 92, nombre: "Majaceite", cuenca: "Guadalete-Barbate", ccaa: "Andalucía", provincia: "Cádiz", hm3: 51, capacidad: 51, hace1year: 43, media10: 40 },
+      // C. MEDITERRÁNEAS ANDALUZAS
+      { id: 93, nombre: "Canales", cuenca: "C. Mediterráneas Andaluzas", ccaa: "Andalucía", provincia: "Granada", hm3: 61, capacidad: 70, hace1year: 48, media10: 52 },
+      { id: 94, nombre: "Beninar", cuenca: "C. Mediterráneas Andaluzas", ccaa: "Andalucía", provincia: "Almería", hm3: 38, capacidad: 55, hace1year: 29, media10: 33 },
+      { id: 95, nombre: "Benínar", cuenca: "C. Mediterráneas Andaluzas", ccaa: "Andalucía", provincia: "Almería", hm3: 38, capacidad: 55, hace1year: 29, media10: 33 },
+      { id: 96, nombre: "La Viñuela", cuenca: "C. Mediterráneas Andaluzas", ccaa: "Andalucía", provincia: "Málaga", hm3: 95, capacidad: 165, hace1year: 78, media10: 99 },
+      { id: 97, nombre: "El Limonero", cuenca: "C. Mediterráneas Andaluzas", ccaa: "Andalucía", provincia: "Málaga", hm3: 30, capacidad: 48, hace1year: 24, media10: 31 },
+      { id: 98, nombre: "Conde del Guadalhorce", cuenca: "C. Mediterráneas Andaluzas", ccaa: "Andalucía", provincia: "Málaga", hm3: 103, capacidad: 126, hace1year: 85, media10: 88 },
+      { id: 99, nombre: "Guadalteba", cuenca: "C. Mediterráneas Andaluzas", ccaa: "Andalucía", provincia: "Málaga", hm3: 80, capacidad: 123, hace1year: 65, media10: 74 },
+      // TINTO-ODIEL-PIEDRAS
+      { id: 100, nombre: "Andévalo", cuenca: "Tinto-Odiel-Piedras", ccaa: "Andalucía", provincia: "Huelva", hm3: 540, capacidad: 678, hace1year: 463, media10: 420 },
+      { id: 101, nombre: "Sancho el Mayor", cuenca: "Tinto-Odiel-Piedras", ccaa: "Andalucía", provincia: "Huelva", hm3: 39, capacidad: 65, hace1year: 33, media10: 41 },
+      // JÚCAR
+      { id: 102, nombre: "Contreras", cuenca: "Júcar", ccaa: "Castilla-La Mancha", provincia: "Cuenca", hm3: 784, capacidad: 852, hace1year: 640, media10: 710 },
+      { id: 103, nombre: "Tous", cuenca: "Júcar", ccaa: "Comunitat Valenciana", provincia: "Valencia", hm3: 54, capacidad: 73, hace1year: 44, media10: 52 },
+      { id: 104, nombre: "Alarcón", cuenca: "Júcar", ccaa: "Castilla-La Mancha", provincia: "Cuenca", hm3: 892, capacidad: 1118, hace1year: 730, media10: 780 },
+      { id: 105, nombre: "Benagéber", cuenca: "Júcar", ccaa: "Comunitat Valenciana", provincia: "Valencia", hm3: 153, capacidad: 228, hace1year: 125, media10: 145 },
+      { id: 106, nombre: "Loriguilla", cuenca: "Júcar", ccaa: "Comunitat Valenciana", provincia: "Valencia", hm3: 60, capacidad: 72, hace1year: 49, media10: 54 },
+      { id: 107, nombre: "Forata", cuenca: "Júcar", ccaa: "Comunitat Valenciana", provincia: "Valencia", hm3: 27, capacidad: 38, hace1year: 22, media10: 25 },
+      { id: 108, nombre: "Amadorio", cuenca: "Júcar", ccaa: "Comunitat Valenciana", provincia: "Alicante", hm3: 14, capacidad: 23, hace1year: 11, media10: 14 },
+      // SEGURA
+      { id: 109, nombre: "Cenajo", cuenca: "Segura", ccaa: "Murcia", provincia: "Murcia", hm3: 380, capacidad: 437, hace1year: 308, media10: 294 },
+      { id: 110, nombre: "Camarillas", cuenca: "Segura", ccaa: "Murcia", provincia: "Murcia", hm3: 32, capacidad: 38, hace1year: 26, media10: 25 },
+      { id: 111, nombre: "Fuensanta", cuenca: "Segura", ccaa: "Murcia", provincia: "Murcia", hm3: 190, capacidad: 233, hace1year: 154, media10: 157 },
+      { id: 112, nombre: "La Pedrera", cuenca: "Segura", ccaa: "Murcia", provincia: "Murcia", hm3: 166, capacidad: 246, hace1year: 134, media10: 154 },
+      { id: 113, nombre: "Alfonso XIII", cuenca: "Segura", ccaa: "Murcia", provincia: "Murcia", hm3: 13, capacidad: 17, hace1year: 11, media10: 11 },
+      // MIÑO-SIL
+      { id: 114, nombre: "Frieira", cuenca: "Miño-Sil", ccaa: "Galicia", provincia: "Ourense", hm3: 40, capacidad: 44, hace1year: 35, media10: 38 },
+      { id: 115, nombre: "Peares", cuenca: "Miño-Sil", ccaa: "Galicia", provincia: "Ourense", hm3: 28, capacidad: 31, hace1year: 24, media10: 26 },
+      { id: 116, nombre: "Pumares", cuenca: "Miño-Sil", ccaa: "Galicia", provincia: "Ourense", hm3: 7, capacidad: 9, hace1year: 6, media10: 7 },
+      { id: 117, nombre: "Velle", cuenca: "Miño-Sil", ccaa: "Galicia", provincia: "Ourense", hm3: 14, capacidad: 16, hace1year: 12, media10: 13 },
+      { id: 118, nombre: "Castrelo", cuenca: "Miño-Sil", ccaa: "Galicia", provincia: "Ourense", hm3: 20, capacidad: 23, hace1year: 17, media10: 18 },
+      { id: 119, nombre: "Belesar", cuenca: "Miño-Sil", ccaa: "Galicia", provincia: "Lugo", hm3: 654, capacidad: 654, hace1year: 568, media10: 563 },
+      { id: 120, nombre: "Os Peares", cuenca: "Miño-Sil", ccaa: "Galicia", provincia: "Ourense", hm3: 28, capacidad: 31, hace1year: 24, media10: 26 },
+      { id: 121, nombre: "San Martín", cuenca: "Miño-Sil", ccaa: "Galicia", provincia: "Ourense", hm3: 5, capacidad: 6, hace1year: 4, media10: 5 },
+      { id: 122, nombre: "Das Conchas", cuenca: "Miño-Sil", ccaa: "Galicia", provincia: "Ourense", hm3: 83, capacidad: 84, hace1year: 72, media10: 72 },
+      { id: 123, nombre: "Chandrexa", cuenca: "Miño-Sil", ccaa: "Galicia", provincia: "Ourense", hm3: 51, capacidad: 55, hace1year: 44, media10: 46 },
+      { id: 124, nombre: "Sotelo", cuenca: "Miño-Sil", ccaa: "Galicia", provincia: "Ourense", hm3: 12, capacidad: 14, hace1year: 10, media10: 11 },
+      { id: 125, nombre: "Cachamuiña", cuenca: "Miño-Sil", ccaa: "Galicia", provincia: "Ourense", hm3: 9, capacidad: 10, hace1year: 8, media10: 8 },
+      // GALICIA COSTA
+      { id: 126, nombre: "Cecebre", cuenca: "Galicia Costa", ccaa: "Galicia", provincia: "A Coruña", hm3: 56, capacidad: 68, hace1year: 49, media10: 55 },
+      { id: 127, nombre: "Baña (A Baña)", cuenca: "Galicia Costa", ccaa: "Galicia", provincia: "A Coruña", hm3: 55, capacidad: 57, hace1year: 48, media10: 50 },
+      { id: 128, nombre: "Portodemouros", cuenca: "Galicia Costa", ccaa: "Galicia", provincia: "A Coruña", hm3: 275, capacidad: 291, hace1year: 239, media10: 249 },
+      { id: 129, nombre: "Eiras", cuenca: "Galicia Costa", ccaa: "Galicia", provincia: "Pontevedra", hm3: 108, capacidad: 122, hace1year: 94, media10: 98 },
+      // CANTÁBRICO
+      { id: 130, nombre: "Urdalur", cuenca: "Cantábrico", ccaa: "País Vasco", provincia: "Álava", hm3: 8, capacidad: 9, hace1year: 7, media10: 8 },
+      { id: 131, nombre: "Añarbe", cuenca: "Cantábrico", ccaa: "País Vasco", provincia: "Guipúzcoa", hm3: 40, capacidad: 43, hace1year: 35, media10: 37 },
+      { id: 132, nombre: "Saelices", cuenca: "Cantábrico", ccaa: "Cantabria", provincia: "Cantabria", hm3: 21, capacidad: 23, hace1year: 18, media10: 19 },
+      { id: 133, nombre: "La Cohilla", cuenca: "Cantábrico", ccaa: "Cantabria", provincia: "Cantabria", hm3: 45, capacidad: 46, hace1year: 39, media10: 40 },
+      // CUENCAS INTERNAS CATALUÑA
+      { id: 134, nombre: "La Baells", cuenca: "Cuencas Internas Cataluña", ccaa: "Cataluña", provincia: "Barcelona", hm3: 85, capacidad: 109, hace1year: 68, media10: 79 },
+      { id: 135, nombre: "Sau", cuenca: "Cuencas Internas Cataluña", ccaa: "Cataluña", provincia: "Barcelona", hm3: 136, capacidad: 168, hace1year: 108, media10: 124 },
+      { id: 136, nombre: "Susqueda", cuenca: "Cuencas Internas Cataluña", ccaa: "Cataluña", provincia: "Girona", hm3: 158, capacidad: 232, hace1year: 126, media10: 157 },
+      { id: 137, nombre: "Darnius-Boadella", cuenca: "Cuencas Internas Cataluña", ccaa: "Cataluña", provincia: "Girona", hm3: 57, capacidad: 61, hace1year: 45, media10: 47 },
+      { id: 138, nombre: "Sant Ponç", cuenca: "Cuencas Internas Cataluña", ccaa: "Cataluña", provincia: "Lleida", hm3: 18, capacidad: 24, hace1year: 14, media10: 16 },
+      { id: 139, nombre: "Oliana", cuenca: "Cuencas Internas Cataluña", ccaa: "Cataluña", provincia: "Lleida", hm3: 79, capacidad: 101, hace1year: 63, media10: 71 },
+      { id: 140, nombre: "Rialb", cuenca: "Cuencas Internas Cataluña", ccaa: "Cataluña", provincia: "Lleida", hm3: 169, capacidad: 402, hace1year: 135, media10: 173 },
     ];
 
     const TOTAL = { hm3: 46608, capacidad: 56115, hace1year: 42100, media10: 39200 };
@@ -148,10 +268,13 @@
     const color = (p) => p >= 75 ? "#4ade80" : p >= 50 ? "#facc15" : p >= 30 ? "#fb923c" : "#f87171";
     const norm = (s) => s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
-    const row = { background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 12, padding: "13px 16px", cursor: "pointer", marginBottom: 8 };
+    // TEXT COLORS — más visibles
+    const T = { muted: "rgba(255,255,255,0.65)", faint: "rgba(255,255,255,0.45)", label: "rgba(255,255,255,0.5)" };
+
+    const row = { background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 12, padding: "13px 16px", cursor: "pointer", marginBottom: 8 };
 
     const Bar = ({ v, c, h = 5 }) => (
-      <div style={{ background: "rgba(255,255,255,0.08)", borderRadius: 99, height: h, overflow: "hidden" }}>
+      <div style={{ background: "rgba(255,255,255,0.1)", borderRadius: 99, height: h, overflow: "hidden" }}>
         <div style={{ width: `${pct(v, c)}%`, height: "100%", background: color(pct(v, c)), borderRadius: 99, transition: "width .6s" }} />
       </div>
     );
@@ -160,11 +283,11 @@
       const p = pct(v, c);
       const col = accent || color(p);
       return (
-        <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 14, padding: "16px 18px", flex: 1, minWidth: 120 }}>
-          <p style={{ margin: "0 0 5px", fontSize: 11, color: "rgba(255,255,255,0.4)", letterSpacing: ".08em", textTransform: "uppercase" }}>{label}</p>
-          <p style={{ margin: "0 0 3px", fontSize: 24, fontWeight: 700, color: col, letterSpacing: "-.02em" }}>{p}%</p>
-          <p style={{ margin: "0 0 6px", fontSize: 12, color: "rgba(255,255,255,0.4)" }}>{fmt(v)} / {fmt(c)}</p>
-          {sub && <p style={{ margin: 0, fontSize: 11, color: "rgba(255,255,255,0.28)" }}>{sub}</p>}
+        <div style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.09)", borderRadius: 14, padding: "16px 18px", flex: 1, minWidth: 120 }}>
+          <p style={{ margin: "0 0 5px", fontSize: 11, color: T.label, letterSpacing: ".08em", textTransform: "uppercase" }}>{label}</p>
+          <p style={{ margin: "0 0 4px", fontSize: 24, fontWeight: 700, color: col, letterSpacing: "-.02em" }}>{p}%</p>
+          <p style={{ margin: "0 0 6px", fontSize: 13, color: T.muted }}>{fmt(v)} / {fmt(c)}</p>
+          {sub && <p style={{ margin: 0, fontSize: 12, color: T.faint }}>{sub}</p>}
         </div>
       );
     };
@@ -174,14 +297,14 @@
       const p = Math.round((d / r) * 100);
       return (
         <span style={{ display: "flex", alignItems: "center", gap: 5 }}>
-          <span style={{ fontSize: 11, color: "rgba(255,255,255,0.35)" }}>{label}</span>
-          <span style={{ fontSize: 12, fontWeight: 600, color: d >= 0 ? "#4ade80" : "#f87171" }}>{d >= 0 ? "▲" : "▼"} {Math.abs(p)}%</span>
+          <span style={{ fontSize: 12, color: T.faint }}>{label}</span>
+          <span style={{ fontSize: 13, fontWeight: 600, color: d >= 0 ? "#4ade80" : "#f87171" }}>{d >= 0 ? "▲" : "▼"} {Math.abs(p)}%</span>
         </span>
       );
     };
 
     const Volver = ({ onClick }) => (
-      <button onClick={onClick} style={{ background: "none", border: "none", color: "rgba(255,255,255,0.4)", cursor: "pointer", fontSize: 13, padding: "0 0 20px", display: "flex", gap: 6 }}>← Volver</button>
+      <button onClick={onClick} style={{ background: "none", border: "none", color: T.muted, cursor: "pointer", fontSize: 13, padding: "0 0 20px", display: "flex", gap: 6 }}>← Volver</button>
     );
 
     const Item = ({ nombre, sub, hm3, capacidad, onClick }) => (
@@ -189,7 +312,7 @@
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 6 }}>
           <div style={{ flex: 1, minWidth: 0, paddingRight: 10 }}>
             <span style={{ fontSize: 14, fontWeight: 500 }}>{nombre}</span>
-            {sub && <span style={{ fontSize: 12, color: "rgba(255,255,255,0.3)", marginLeft: 6 }}>{sub}</span>}
+            {sub && <span style={{ fontSize: 12, color: T.muted, marginLeft: 6 }}>{sub}</span>}
           </div>
           <span style={{ fontSize: 15, fontWeight: 700, color: color(pct(hm3, capacidad)), flexShrink: 0 }}>{pct(hm3, capacidad)}%</span>
         </div>
@@ -205,9 +328,9 @@
         </div>
         <Bar v={item.hm3} c={item.capacidad} />
         <div style={{ display: "flex", gap: 14, marginTop: 8, flexWrap: "wrap" }}>
-          <span style={{ fontSize: 12, color: "rgba(255,255,255,0.4)" }}>{fmt(item.hm3)}</span>
-          <span style={{ fontSize: 12, color: "rgba(255,255,255,0.3)" }}>hace 1a: {pct(item.hace1year, item.capacidad)}%</span>
-          <span style={{ fontSize: 12, color: "rgba(255,255,255,0.3)" }}>media 10a: {pct(item.media10, item.capacidad)}%</span>
+          <span style={{ fontSize: 12, color: T.muted }}>{fmt(item.hm3)}</span>
+          <span style={{ fontSize: 12, color: T.faint }}>hace 1a: {pct(item.hace1year, item.capacidad)}%</span>
+          <span style={{ fontSize: 12, color: T.faint }}>media 10a: {pct(item.media10, item.capacidad)}%</span>
         </div>
       </div>
     );
@@ -220,16 +343,17 @@
         if (tipo === "provincia") return norm(e.provincia) === norm(item.nombre);
         return false;
       });
+      const tipoLabel = tipo === "cuenca" ? "Cuenca" : tipo === "ccaa" ? "Comunidad autónoma" : "Provincia";
       return (
         <div>
-          <p style={{ margin: "0 0 4px", fontSize: 11, color: "rgba(255,255,255,0.3)", letterSpacing: ".1em", textTransform: "uppercase" }}>{tipo === "cuenca" ? "Cuenca" : tipo === "ccaa" ? "Comunidad autónoma" : "Provincia"}</p>
+          <p style={{ margin: "0 0 4px", fontSize: 11, color: T.label, letterSpacing: ".1em", textTransform: "uppercase" }}>{tipoLabel}</p>
           <p style={{ margin: "0 0 16px", fontSize: 26, fontWeight: 700 }}>{item.nombre}</p>
           <p style={{ margin: "0 0 10px", fontSize: 52, fontWeight: 800, letterSpacing: "-.04em", color: color(p) }}>{p}%</p>
           <Bar v={item.hm3} c={item.capacidad} h={8} />
           <div style={{ display: "flex", gap: 10, marginTop: 18, flexWrap: "wrap" }}>
             <KPI label="Hoy" v={item.hm3} c={item.capacidad} />
-            <KPI label="Hace 1 año" v={item.hace1year} c={item.capacidad} accent="rgba(255,255,255,0.5)" sub={`Δ ${item.hm3 > item.hace1year ? "+" : ""}${Math.round(item.hm3 - item.hace1year)} hm³`} />
-            <KPI label="Media 10 años" v={item.media10} c={item.capacidad} accent="rgba(255,255,255,0.35)" sub={`Δ ${item.hm3 > item.media10 ? "+" : ""}${Math.round(item.hm3 - item.media10)} hm³`} />
+            <KPI label="Hace 1 año" v={item.hace1year} c={item.capacidad} accent={T.muted} sub={`Δ ${item.hm3 > item.hace1year ? "+" : ""}${Math.round(item.hm3 - item.hace1year)} hm³`} />
+            <KPI label="Media 10 años" v={item.media10} c={item.capacidad} accent={T.faint} sub={`Δ ${item.hm3 > item.media10 ? "+" : ""}${Math.round(item.hm3 - item.media10)} hm³`} />
           </div>
           <div style={{ display: "flex", gap: 16, marginTop: 12, flexWrap: "wrap" }}>
             <Delta a={item.hm3} r={item.hace1year} label="vs año anterior" />
@@ -237,8 +361,8 @@
           </div>
           {emb.length > 0 && (
             <>
-              <p style={{ margin: "24px 0 10px", fontSize: 12, color: "rgba(255,255,255,0.3)" }}>Embalses ({emb.length})</p>
-              {emb.map(e => <Item key={e.id} nombre={e.nombre} sub={tipo !== "provincia" ? e.provincia : e.cuenca} hm3={e.hm3} capacidad={e.capacidad} onClick={() => onEmbalse(e.id)} />)}
+              <p style={{ margin: "24px 0 10px", fontSize: 12, color: T.faint }}>Embalses ({emb.length})</p>
+              {[...emb].sort((a,b) => b.capacidad - a.capacidad).map(e => <Item key={e.id} nombre={e.nombre} sub={tipo !== "provincia" ? e.provincia : e.cuenca} hm3={e.hm3} capacidad={e.capacidad} onClick={() => onEmbalse(e.id)} />)}
             </>
           )}
         </div>
@@ -272,15 +396,15 @@
 
       return (
         <div style={{ minHeight: "100vh", background: "#0a0a0f", color: "#fff" }}>
-          <div style={{ borderBottom: "1px solid rgba(255,255,255,0.06)", padding: "0 20px", position: "sticky", top: 0, background: "#0a0a0f", zIndex: 10 }}>
+          <div style={{ borderBottom: "1px solid rgba(255,255,255,0.07)", padding: "0 20px", position: "sticky", top: 0, background: "#0a0a0f", zIndex: 10 }}>
             <div style={{ maxWidth: 860, margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "space-between", height: 52 }}>
               <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                 <div style={{ width: 7, height: 7, borderRadius: "50%", background: "#3b82f6" }} />
-                <span style={{ fontSize: 15, fontWeight: 600 }}>embalses<span style={{ color: "rgba(255,255,255,0.3)" }}>.es</span></span>
+                <span style={{ fontSize: 15, fontWeight: 600 }}>embalses<span style={{ color: T.faint }}>.es</span></span>
               </div>
               <nav style={{ display: "flex", gap: 2 }}>
                 {navs.map(({ id, label }) => (
-                  <button key={id} onClick={() => go(id)} style={{ background: vista === id ? "rgba(255,255,255,0.09)" : "none", border: "none", color: vista === id ? "#fff" : "rgba(255,255,255,0.4)", fontSize: 13, cursor: "pointer", padding: "7px 12px", borderRadius: 99 }}>{label}</button>
+                  <button key={id} onClick={() => go(id)} style={{ background: vista === id ? "rgba(255,255,255,0.09)" : "none", border: "none", color: vista === id ? "#fff" : T.muted, fontSize: 13, cursor: "pointer", padding: "7px 12px", borderRadius: 99 }}>{label}</button>
                 ))}
               </nav>
             </div>
@@ -293,20 +417,20 @@
               const p = pct(TOTAL.hm3, TOTAL.capacidad);
               return (
                 <div>
-                  <p style={{ margin: "0 0 4px", fontSize: 11, color: "rgba(255,255,255,0.3)", letterSpacing: ".1em", textTransform: "uppercase" }}>Reserva total · España</p>
-                  <p style={{ margin: "0 0 8px", fontSize: 64, fontWeight: 800, letterSpacing: "-.05em", lineHeight: 1, color: color(p) }}>{p}<span style={{ fontSize: 30, fontWeight: 400, color: "rgba(255,255,255,0.3)" }}>%</span></p>
-                  <p style={{ margin: "0 0 14px", fontSize: 15, color: "rgba(255,255,255,0.4)" }}>{fmt(TOTAL.hm3)} de {fmt(TOTAL.capacidad)} de capacidad total</p>
+                  <p style={{ margin: "0 0 4px", fontSize: 11, color: T.label, letterSpacing: ".1em", textTransform: "uppercase" }}>Reserva total · España</p>
+                  <p style={{ margin: "0 0 8px", fontSize: 64, fontWeight: 800, letterSpacing: "-.05em", lineHeight: 1, color: color(p) }}>{p}<span style={{ fontSize: 30, fontWeight: 400, color: T.faint }}>%</span></p>
+                  <p style={{ margin: "0 0 14px", fontSize: 16, color: T.muted }}>{fmt(TOTAL.hm3)} de {fmt(TOTAL.capacidad)} de capacidad total</p>
                   <Bar v={TOTAL.hm3} c={TOTAL.capacidad} h={8} />
                   <div style={{ display: "flex", gap: 10, marginTop: 18, flexWrap: "wrap" }}>
                     <KPI label="Hoy" v={TOTAL.hm3} c={TOTAL.capacidad} sub="Actualizado esta semana" />
-                    <KPI label="Hace 1 año" v={TOTAL.hace1year} c={TOTAL.capacidad} accent="rgba(255,255,255,0.5)" sub={`Δ ${TOTAL.hm3 > TOTAL.hace1year ? "+" : ""}${Math.round(TOTAL.hm3 - TOTAL.hace1year)} hm³`} />
-                    <KPI label="Media 10 años" v={TOTAL.media10} c={TOTAL.capacidad} accent="rgba(255,255,255,0.35)" sub={`Δ ${TOTAL.hm3 > TOTAL.media10 ? "+" : ""}${Math.round(TOTAL.hm3 - TOTAL.media10)} hm³`} />
+                    <KPI label="Hace 1 año" v={TOTAL.hace1year} c={TOTAL.capacidad} accent={T.muted} sub={`Δ ${TOTAL.hm3 > TOTAL.hace1year ? "+" : ""}${Math.round(TOTAL.hm3 - TOTAL.hace1year)} hm³`} />
+                    <KPI label="Media 10 años" v={TOTAL.media10} c={TOTAL.capacidad} accent={T.faint} sub={`Δ ${TOTAL.hm3 > TOTAL.media10 ? "+" : ""}${Math.round(TOTAL.hm3 - TOTAL.media10)} hm³`} />
                   </div>
                   <div style={{ display: "flex", gap: 16, marginTop: 12, marginBottom: 28, flexWrap: "wrap" }}>
                     <Delta a={TOTAL.hm3} r={TOTAL.hace1year} label="vs año anterior" />
                     <Delta a={TOTAL.hm3} r={TOTAL.media10} label="vs media 10 años" />
                   </div>
-                  <p style={{ margin: "0 0 12px", fontSize: 11, color: "rgba(255,255,255,0.3)", letterSpacing: ".08em", textTransform: "uppercase" }}>Por cuenca</p>
+                  <p style={{ margin: "0 0 12px", fontSize: 11, color: T.label, letterSpacing: ".08em", textTransform: "uppercase" }}>Por cuenca</p>
                   {[...CUENCAS].sort((a, b) => pct(b.hm3, b.capacidad) - pct(a.hm3, a.capacidad)).map(c => (
                     <Item key={c.id} nombre={c.nombre} hm3={c.hm3} capacidad={c.capacidad} onClick={() => { setVista("cuencas"); setSel(c.id); }} />
                   ))}
@@ -358,10 +482,10 @@
                   value={q}
                   onChange={e => setQ(e.target.value)}
                   placeholder="Nombre, provincia, cuenca o comunidad…"
-                  style={{ width: "100%", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 12, padding: "12px 16px", color: "#fff", fontSize: 15, marginBottom: 16 }}
+                  style={{ width: "100%", background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.13)", borderRadius: 12, padding: "12px 16px", color: "#fff", fontSize: 15, marginBottom: 16 }}
                 />
                 {termino.length >= 2 && (
-                  <p style={{ fontSize: 12, color: "rgba(255,255,255,0.3)", marginBottom: 10 }}>
+                  <p style={{ fontSize: 12, color: T.faint, marginBottom: 10 }}>
                     {resultados.length === 0 ? `Sin resultados para "${q}"` : `${resultados.length} resultado${resultados.length !== 1 ? "s" : ""}`}
                   </p>
                 )}
@@ -376,15 +500,15 @@
               return (
                 <div>
                   <Volver onClick={() => setSel(null)} />
-                  <p style={{ margin: "0 0 2px", fontSize: 11, color: "rgba(255,255,255,0.3)", letterSpacing: ".1em", textTransform: "uppercase" }}>Embalse</p>
+                  <p style={{ margin: "0 0 2px", fontSize: 11, color: T.label, letterSpacing: ".1em", textTransform: "uppercase" }}>Embalse</p>
                   <p style={{ margin: "0 0 5px", fontSize: 26, fontWeight: 700 }}>{e.nombre}</p>
-                  <p style={{ margin: "0 0 16px", fontSize: 13, color: "rgba(255,255,255,0.35)" }}>{e.provincia} · {e.cuenca} · {e.ccaa}</p>
+                  <p style={{ margin: "0 0 16px", fontSize: 13, color: T.muted }}>{e.provincia} · {e.cuenca} · {e.ccaa}</p>
                   <p style={{ margin: "0 0 10px", fontSize: 52, fontWeight: 800, letterSpacing: "-.04em", color: color(p) }}>{p}%</p>
                   <Bar v={e.hm3} c={e.capacidad} h={8} />
                   <div style={{ display: "flex", gap: 10, marginTop: 18, flexWrap: "wrap" }}>
                     <KPI label="Hoy" v={e.hm3} c={e.capacidad} />
-                    <KPI label="Hace 1 año" v={e.hace1year} c={e.capacidad} accent="rgba(255,255,255,0.5)" sub={`Δ ${e.hm3 > e.hace1year ? "+" : ""}${Math.round(e.hm3 - e.hace1year)} hm³`} />
-                    <KPI label="Media 10 años" v={e.media10} c={e.capacidad} accent="rgba(255,255,255,0.35)" sub={`Δ ${e.hm3 > e.media10 ? "+" : ""}${Math.round(e.hm3 - e.media10)} hm³`} />
+                    <KPI label="Hace 1 año" v={e.hace1year} c={e.capacidad} accent={T.muted} sub={`Δ ${e.hm3 > e.hace1year ? "+" : ""}${Math.round(e.hm3 - e.hace1year)} hm³`} />
+                    <KPI label="Media 10 años" v={e.media10} c={e.capacidad} accent={T.faint} sub={`Δ ${e.hm3 > e.media10 ? "+" : ""}${Math.round(e.hm3 - e.media10)} hm³`} />
                   </div>
                   <div style={{ display: "flex", gap: 16, marginTop: 12, flexWrap: "wrap" }}>
                     <Delta a={e.hm3} r={e.hace1year} label="vs año anterior" />
@@ -396,9 +520,9 @@
 
           </div>
 
-          <div style={{ borderTop: "1px solid rgba(255,255,255,0.05)", padding: "16px 24px" }}>
-            <p style={{ margin: 0, textAlign: "center", fontSize: 12, color: "rgba(255,255,255,0.2)" }}>
-              Datos: <a href="https://www.embalses.net" target="_blank" rel="noopener noreferrer" style={{ color: "rgba(255,255,255,0.3)", textDecoration: "none" }}>embalses.net</a> · Ministerio de Transición Ecológica
+          <div style={{ borderTop: "1px solid rgba(255,255,255,0.06)", padding: "16px 24px" }}>
+            <p style={{ margin: 0, textAlign: "center", fontSize: 12, color: T.faint }}>
+              Datos: <a href="https://www.embalses.net" target="_blank" rel="noopener noreferrer" style={{ color: T.muted, textDecoration: "none" }}>embalses.net</a> · Ministerio de Transición Ecológica
             </p>
           </div>
         </div>
