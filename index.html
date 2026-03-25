@@ -10,18 +10,16 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { background: #0a0a0f; color: #fff; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; min-height: 100vh; }
-    input, button, textarea { font-family: inherit; }
-    ::-webkit-scrollbar { width: 4px; height: 4px; }
-    ::-webkit-scrollbar-track { background: transparent; }
+    input, button { font-family: inherit; }
+    ::-webkit-scrollbar { width: 4px; }
     ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 99px; }
     ::placeholder { color: rgba(255,255,255,0.25); }
   </style>
 </head>
 <body>
   <div id="root"></div>
-
   <script type="text/babel">
-    const { useState, useRef } = React;
+    const { useState } = React;
 
     const CUENCAS = [
       { id: "guadalquivir", nombre: "Guadalquivir", hm3: 8420, capacidad: 10236, hace1year: 7890, media10: 6940 },
@@ -32,10 +30,10 @@
       { id: "tajo", nombre: "Tajo", hm3: 5870, capacidad: 11073, hace1year: 5200, media10: 6740 },
       { id: "guadiana", nombre: "Guadiana", hm3: 3490, capacidad: 8999, hace1year: 3870, media10: 4120 },
       { id: "guadaletebarbate", nombre: "Guadalete-Barbate", hm3: 1240, capacidad: 2104, hace1year: 1050, media10: 980 },
-      { id: "tintoOdielPiedras", nombre: "Tinto-Odiel-Piedras", hm3: 680, capacidad: 920, hace1year: 590, media10: 540 },
+      { id: "tinto", nombre: "Tinto-Odiel-Piedras", hm3: 680, capacidad: 920, hace1year: 590, media10: 540 },
       { id: "cma", nombre: "C. Mediterráneas Andaluzas", hm3: 1020, capacidad: 1738, hace1year: 870, media10: 890 },
-      { id: "minoSil", nombre: "Miño-Sil", hm3: 2870, capacidad: 3543, hace1year: 2640, media10: 2720 },
-      { id: "galiciaCosta", nombre: "Galicia Costa", hm3: 1240, capacidad: 1680, hace1year: 1100, media10: 1180 },
+      { id: "minosil", nombre: "Miño-Sil", hm3: 2870, capacidad: 3543, hace1year: 2640, media10: 2720 },
+      { id: "galiciacosta", nombre: "Galicia Costa", hm3: 1240, capacidad: 1680, hace1year: 1100, media10: 1180 },
       { id: "cantabrico", nombre: "Cantábrico", hm3: 1240, capacidad: 1560, hace1year: 1080, media10: 1140 },
       { id: "cataluna", nombre: "Cuencas Internas Cataluña", hm3: 640, capacidad: 860, hace1year: 520, media10: 590 },
     ];
@@ -56,6 +54,55 @@
       { id: "valencia", nombre: "Comunitat Valenciana", hm3: 1340, capacidad: 2180, hace1year: 1080, media10: 1290 },
     ];
 
+    const PROVINCIAS = [
+      { id: "badajoz", nombre: "Badajoz", hm3: 6037, capacidad: 7861, hace1year: 5560, media10: 5020 },
+      { id: "caceres", nombre: "Cáceres", hm3: 4256, capacidad: 5148, hace1year: 3890, media10: 3840 },
+      { id: "cordoba", nombre: "Córdoba", hm3: 1820, capacidad: 2210, hace1year: 1640, media10: 1540 },
+      { id: "sevilla", nombre: "Sevilla", hm3: 2140, capacidad: 2860, hace1year: 1980, media10: 1870 },
+      { id: "jaen", nombre: "Jaén", hm3: 1840, capacidad: 2190, hace1year: 1620, media10: 1450 },
+      { id: "granada", nombre: "Granada", hm3: 780, capacidad: 1080, hace1year: 650, media10: 690 },
+      { id: "almeria", nombre: "Almería", hm3: 210, capacidad: 380, hace1year: 170, media10: 195 },
+      { id: "cadiz", nombre: "Cádiz", hm3: 560, capacidad: 820, hace1year: 470, media10: 490 },
+      { id: "malaga", nombre: "Málaga", hm3: 490, capacidad: 720, hace1year: 390, media10: 420 },
+      { id: "huelva", nombre: "Huelva", hm3: 480, capacidad: 655, hace1year: 410, media10: 380 },
+      { id: "zaragoza", nombre: "Zaragoza", hm3: 2140, capacidad: 2620, hace1year: 1940, media10: 2010 },
+      { id: "huesca", nombre: "Huesca", hm3: 1480, capacidad: 1810, hace1year: 1280, media10: 1360 },
+      { id: "teruel", nombre: "Teruel", hm3: 500, capacidad: 580, hace1year: 470, media10: 460 },
+      { id: "salamanca", nombre: "Salamanca", hm3: 2648, capacidad: 2800, hace1year: 2200, media10: 2190 },
+      { id: "zamora", nombre: "Zamora", hm3: 1480, capacidad: 1680, hace1year: 1280, media10: 1380 },
+      { id: "leon", nombre: "León", hm3: 1560, capacidad: 1780, hace1year: 1340, media10: 1460 },
+      { id: "burgos", nombre: "Burgos", hm3: 890, capacidad: 1040, hace1year: 780, media10: 820 },
+      { id: "valladolid", nombre: "Valladolid", hm3: 420, capacidad: 510, hace1year: 360, media10: 390 },
+      { id: "soria", nombre: "Soria", hm3: 380, capacidad: 460, hace1year: 320, media10: 350 },
+      { id: "segovia", nombre: "Segovia", hm3: 310, capacidad: 370, hace1year: 260, media10: 285 },
+      { id: "avila", nombre: "Ávila", hm3: 432, capacidad: 520, hace1year: 370, media10: 395 },
+      { id: "cuenca", nombre: "Cuenca", hm3: 2630, capacidad: 2960, hace1year: 2380, media10: 2190 },
+      { id: "guadalajara", nombre: "Guadalajara", hm3: 1240, capacidad: 1380, hace1year: 1100, media10: 1060 },
+      { id: "toledo", nombre: "Toledo", hm3: 980, capacidad: 1420, hace1year: 860, media10: 920 },
+      { id: "ciudad_real", nombre: "Ciudad Real", hm3: 580, capacidad: 1160, hace1year: 480, media10: 640 },
+      { id: "albacete", nombre: "Albacete", hm3: 290, capacidad: 430, hace1year: 240, media10: 260 },
+      { id: "barcelona", nombre: "Barcelona", hm3: 420, capacidad: 650, hace1year: 340, media10: 390 },
+      { id: "lleida", nombre: "Lleida", hm3: 980, capacidad: 1240, hace1year: 840, media10: 920 },
+      { id: "tarragona", nombre: "Tarragona", hm3: 480, capacidad: 620, hace1year: 410, media10: 460 },
+      { id: "girona", nombre: "Girona", hm3: 260, capacidad: 360, hace1year: 210, media10: 240 },
+      { id: "madrid_p", nombre: "Madrid", hm3: 830, capacidad: 1060, hace1year: 720, media10: 780 },
+      { id: "murcia_p", nombre: "Murcia", hm3: 520, capacidad: 720, hace1year: 410, media10: 480 },
+      { id: "navarra_p", nombre: "Navarra", hm3: 1280, capacidad: 1780, hace1year: 1140, media10: 1230 },
+      { id: "rioja_p", nombre: "La Rioja", hm3: 310, capacidad: 420, hace1year: 270, media10: 290 },
+      { id: "alava", nombre: "Álava", hm3: 210, capacidad: 280, hace1year: 180, media10: 200 },
+      { id: "guipuzcoa", nombre: "Guipúzcoa", hm3: 130, capacidad: 175, hace1year: 110, media10: 125 },
+      { id: "vizcaya", nombre: "Vizcaya", hm3: 90, capacidad: 105, hace1year: 80, media10: 85 },
+      { id: "valencia_p", nombre: "Valencia", hm3: 680, capacidad: 1080, hace1year: 540, media10: 640 },
+      { id: "alicante", nombre: "Alicante", hm3: 280, capacidad: 480, hace1year: 220, media10: 260 },
+      { id: "castellon", nombre: "Castellón", hm3: 380, capacidad: 620, hace1year: 320, media10: 390 },
+      { id: "pontevedra", nombre: "Pontevedra", hm3: 980, capacidad: 1240, hace1year: 870, media10: 930 },
+      { id: "acoruna", nombre: "A Coruña", hm3: 1420, capacidad: 1780, hace1year: 1260, media10: 1340 },
+      { id: "lugo", nombre: "Lugo", hm3: 1040, capacidad: 1320, hace1year: 920, media10: 980 },
+      { id: "ourense", nombre: "Ourense", hm3: 870, capacidad: 1080, hace1year: 790, media10: 840 },
+      { id: "asturias", nombre: "Asturias", hm3: 560, capacidad: 720, hace1year: 490, media10: 530 },
+      { id: "cantabria", nombre: "Cantabria", hm3: 420, capacidad: 540, hace1year: 370, media10: 400 },
+    ];
+
     const EMBALSES = [
       { id: 1, nombre: "La Serena", cuenca: "Guadiana", ccaa: "Extremadura", provincia: "Badajoz", hm3: 2920, capacidad: 3219, hace1year: 3041, media10: 2140 },
       { id: 2, nombre: "Alcántara (José M. Oriol)", cuenca: "Tajo", ccaa: "Extremadura", provincia: "Cáceres", hm3: 2424, capacidad: 3162, hace1year: 2680, media10: 2100 },
@@ -63,7 +110,7 @@
       { id: 4, nombre: "Buendía", cuenca: "Tajo", ccaa: "Castilla-La Mancha", provincia: "Cuenca", hm3: 1586, capacidad: 1638, hace1year: 1490, media10: 1280 },
       { id: 5, nombre: "Cijara", cuenca: "Guadiana", ccaa: "Extremadura", provincia: "Badajoz", hm3: 1422, capacidad: 1670, hace1year: 1280, media10: 1150 },
       { id: 6, nombre: "García de Sola (Puerto Peña)", cuenca: "Guadiana", ccaa: "Extremadura", provincia: "Badajoz", hm3: 894, capacidad: 1101, hace1year: 780, media10: 820 },
-      { id: 7, nombre: "Torreón-El Castillo (Bornos)", cuenca: "Guadalete-Barbate", ccaa: "Andalucía", provincia: "Cádiz", hm3: 187, capacidad: 239, hace1year: 156, media10: 171 },
+      { id: 7, nombre: "Bornos", cuenca: "Guadalete-Barbate", ccaa: "Andalucía", provincia: "Cádiz", hm3: 187, capacidad: 239, hace1year: 156, media10: 171 },
       { id: 8, nombre: "Contreras", cuenca: "Júcar", ccaa: "Castilla-La Mancha", provincia: "Cuenca", hm3: 784, capacidad: 852, hace1year: 640, media10: 710 },
       { id: 9, nombre: "Mequinenza", cuenca: "Ebro", ccaa: "Aragón", provincia: "Zaragoza", hm3: 1282, capacidad: 1534, hace1year: 1180, media10: 1230 },
       { id: 10, nombre: "Ribarroja", cuenca: "Ebro", ccaa: "Cataluña", provincia: "Tarragona", hm3: 202, capacidad: 207, hace1year: 190, media10: 198 },
@@ -71,7 +118,7 @@
       { id: 12, nombre: "Porma (Juan Benet)", cuenca: "Duero", ccaa: "Castilla y León", provincia: "León", hm3: 315, capacidad: 317, hace1year: 280, media10: 270 },
       { id: 13, nombre: "Valdecañas", cuenca: "Tajo", ccaa: "Extremadura", provincia: "Cáceres", hm3: 1446, capacidad: 1446, hace1year: 1290, media10: 1180 },
       { id: 14, nombre: "Orellana", cuenca: "Guadiana", ccaa: "Extremadura", provincia: "Badajoz", hm3: 796, capacidad: 864, hace1year: 710, media10: 620 },
-      { id: 15, nombre: "Canales (Sierra Nevada)", cuenca: "C. Mediterráneas Andaluzas", ccaa: "Andalucía", provincia: "Granada", hm3: 61, capacidad: 70, hace1year: 48, media10: 52 },
+      { id: 15, nombre: "Canales", cuenca: "C. Mediterráneas Andaluzas", ccaa: "Andalucía", provincia: "Granada", hm3: 61, capacidad: 70, hace1year: 48, media10: 52 },
       { id: 16, nombre: "Iznájar", cuenca: "Guadalquivir", ccaa: "Andalucía", provincia: "Córdoba", hm3: 890, capacidad: 981, hace1year: 820, media10: 730 },
       { id: 17, nombre: "Tranco de Beas", cuenca: "Guadalquivir", ccaa: "Andalucía", provincia: "Jaén", hm3: 486, capacidad: 500, hace1year: 420, media10: 390 },
       { id: 18, nombre: "Entrepeñas", cuenca: "Tajo", ccaa: "Castilla-La Mancha", provincia: "Guadalajara", hm3: 803, capacidad: 835, hace1year: 740, media10: 680 },
@@ -82,141 +129,158 @@
       { id: 23, nombre: "Proserpina", cuenca: "Guadiana", ccaa: "Extremadura", provincia: "Badajoz", hm3: 5, capacidad: 7, hace1year: 4, media10: 5 },
       { id: 24, nombre: "Guadalmena", cuenca: "Guadalquivir", ccaa: "Andalucía", provincia: "Jaén", hm3: 910, capacidad: 910, hace1year: 790, media10: 720 },
       { id: 25, nombre: "Beninar", cuenca: "C. Mediterráneas Andaluzas", ccaa: "Andalucía", provincia: "Almería", hm3: 38, capacidad: 55, hace1year: 29, media10: 33 },
+      { id: 26, nombre: "La Baells", cuenca: "Cuencas Internas Cataluña", ccaa: "Cataluña", provincia: "Barcelona", hm3: 85, capacidad: 109, hace1year: 68, media10: 79 },
+      { id: 27, nombre: "Sau", cuenca: "Cuencas Internas Cataluña", ccaa: "Cataluña", provincia: "Barcelona", hm3: 136, capacidad: 168, hace1year: 108, media10: 124 },
+      { id: 28, nombre: "Itoiz", cuenca: "Ebro", ccaa: "Navarra", provincia: "Navarra", hm3: 354, capacidad: 418, hace1year: 310, media10: 330 },
+      { id: 29, nombre: "Gabriel y Galán", cuenca: "Tajo", ccaa: "Extremadura", provincia: "Cáceres", hm3: 849, capacidad: 925, hace1year: 760, media10: 710 },
+      { id: 30, nombre: "Bembézar", cuenca: "Guadalquivir", ccaa: "Andalucía", provincia: "Córdoba", hm3: 544, capacidad: 606, hace1year: 480, media10: 430 },
+      { id: 31, nombre: "Guadalcacín", cuenca: "Guadalete-Barbate", ccaa: "Andalucía", provincia: "Cádiz", hm3: 621, capacidad: 858, hace1year: 528, media10: 510 },
+      { id: 32, nombre: "Tous", cuenca: "Júcar", ccaa: "Comunitat Valenciana", provincia: "Valencia", hm3: 54, capacidad: 73, hace1year: 44, media10: 52 },
+      { id: 33, nombre: "Urdalur", cuenca: "Cantábrico", ccaa: "País Vasco", provincia: "Álava", hm3: 8, capacidad: 9, hace1year: 8, media10: 8 },
+      { id: 34, nombre: "El Vicario", cuenca: "Guadiana", ccaa: "Castilla-La Mancha", provincia: "Ciudad Real", hm3: 37, capacidad: 55, hace1year: 30, media10: 38 },
+      { id: 35, nombre: "Rosarito", cuenca: "Tajo", ccaa: "Extremadura", provincia: "Cáceres", hm3: 465, capacidad: 492, hace1year: 410, media10: 380 },
     ];
 
-    const TOTAL_ESPANA = { hm3: 46608, capacidad: 56115, hace1year: 42100, media10: 39200 };
+    const TOTAL = { hm3: 46608, capacidad: 56115, hace1year: 42100, media10: 39200 };
 
     const pct = (v, c) => Math.round((v / c) * 100);
-    const fmtSolo = (v) => v >= 1000 ? `${(v / 1000).toFixed(2)} km³` : `${Math.round(v)} hm³`;
+    const fmt = (v) => v >= 1000 ? `${(v / 1000).toFixed(2)} km³` : `${Math.round(v)} hm³`;
+    const color = (p) => p >= 75 ? "#4ade80" : p >= 50 ? "#facc15" : p >= 30 ? "#fb923c" : "#f87171";
+    const norm = (s) => s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
-    const colorPct = (p) => {
-      if (p >= 75) return "#4ade80";
-      if (p >= 50) return "#facc15";
-      if (p >= 30) return "#fb923c";
-      return "#f87171";
-    };
+    const row = { background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 12, padding: "13px 16px", cursor: "pointer", marginBottom: 8 };
 
-    const GaugeBar = ({ valor, capacidad, height = 6 }) => {
-      const p = pct(valor, capacidad);
-      return (
-        <div style={{ background: "rgba(255,255,255,0.08)", borderRadius: 99, height, overflow: "hidden", width: "100%" }}>
-          <div style={{ width: `${p}%`, height: "100%", background: colorPct(p), borderRadius: 99, transition: "width 0.6s cubic-bezier(.4,0,.2,1)" }} />
-        </div>
-      );
-    };
-
-    const KPICard = ({ label, valor, capacidad, sub, accent }) => {
-      const p = pct(valor, capacidad);
-      const col = accent || colorPct(p);
-      return (
-        <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 16, padding: "20px 24px", flex: 1, minWidth: 140 }}>
-          <p style={{ margin: "0 0 8px", fontSize: 11, color: "rgba(255,255,255,0.45)", letterSpacing: "0.08em", textTransform: "uppercase" }}>{label}</p>
-          <p style={{ margin: "0 0 4px", fontSize: 26, fontWeight: 700, color: col, letterSpacing: "-0.02em" }}>{p}%</p>
-          <p style={{ margin: "0 0 10px", fontSize: 12, color: "rgba(255,255,255,0.5)" }}>{fmtSolo(valor)} / {fmtSolo(capacidad)}</p>
-          {sub && <p style={{ margin: 0, fontSize: 11, color: "rgba(255,255,255,0.35)" }}>{sub}</p>}
-        </div>
-      );
-    };
-
-    const DeltaBadge = ({ actual, referencia, label }) => {
-      const delta = actual - referencia;
-      const pDelta = Math.round((delta / referencia) * 100);
-      const pos = delta >= 0;
-      return (
-        <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-          <span style={{ fontSize: 11, color: "rgba(255,255,255,0.35)" }}>{label}</span>
-          <span style={{ fontSize: 12, fontWeight: 600, color: pos ? "#4ade80" : "#f87171" }}>
-            {pos ? "▲" : "▼"} {Math.abs(pDelta)}%
-          </span>
-        </div>
-      );
-    };
-
-    const BtnVolver = ({ onClick }) => (
-      <button onClick={onClick} style={{ background: "none", border: "none", color: "rgba(255,255,255,0.4)", cursor: "pointer", fontSize: 13, padding: "0 0 24px", display: "flex", alignItems: "center", gap: 6 }}>← Volver</button>
+    const Bar = ({ v, c, h = 5 }) => (
+      <div style={{ background: "rgba(255,255,255,0.08)", borderRadius: 99, height: h, overflow: "hidden" }}>
+        <div style={{ width: `${pct(v, c)}%`, height: "100%", background: color(pct(v, c)), borderRadius: 99, transition: "width .6s" }} />
+      </div>
     );
+
+    const KPI = ({ label, v, c, accent, sub }) => {
+      const p = pct(v, c);
+      const col = accent || color(p);
+      return (
+        <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 14, padding: "16px 18px", flex: 1, minWidth: 120 }}>
+          <p style={{ margin: "0 0 5px", fontSize: 11, color: "rgba(255,255,255,0.4)", letterSpacing: ".08em", textTransform: "uppercase" }}>{label}</p>
+          <p style={{ margin: "0 0 3px", fontSize: 24, fontWeight: 700, color: col, letterSpacing: "-.02em" }}>{p}%</p>
+          <p style={{ margin: "0 0 6px", fontSize: 12, color: "rgba(255,255,255,0.4)" }}>{fmt(v)} / {fmt(c)}</p>
+          {sub && <p style={{ margin: 0, fontSize: 11, color: "rgba(255,255,255,0.28)" }}>{sub}</p>}
+        </div>
+      );
+    };
+
+    const Delta = ({ a, r, label }) => {
+      const d = a - r;
+      const p = Math.round((d / r) * 100);
+      return (
+        <span style={{ display: "flex", alignItems: "center", gap: 5 }}>
+          <span style={{ fontSize: 11, color: "rgba(255,255,255,0.35)" }}>{label}</span>
+          <span style={{ fontSize: 12, fontWeight: 600, color: d >= 0 ? "#4ade80" : "#f87171" }}>{d >= 0 ? "▲" : "▼"} {Math.abs(p)}%</span>
+        </span>
+      );
+    };
+
+    const Volver = ({ onClick }) => (
+      <button onClick={onClick} style={{ background: "none", border: "none", color: "rgba(255,255,255,0.4)", cursor: "pointer", fontSize: 13, padding: "0 0 20px", display: "flex", gap: 6 }}>← Volver</button>
+    );
+
+    const Item = ({ nombre, sub, hm3, capacidad, onClick }) => (
+      <div style={row} onClick={onClick}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 6 }}>
+          <div style={{ flex: 1, minWidth: 0, paddingRight: 10 }}>
+            <span style={{ fontSize: 14, fontWeight: 500 }}>{nombre}</span>
+            {sub && <span style={{ fontSize: 12, color: "rgba(255,255,255,0.3)", marginLeft: 6 }}>{sub}</span>}
+          </div>
+          <span style={{ fontSize: 15, fontWeight: 700, color: color(pct(hm3, capacidad)), flexShrink: 0 }}>{pct(hm3, capacidad)}%</span>
+        </div>
+        <Bar v={hm3} c={capacidad} />
+      </div>
+    );
+
+    const ItemConMetricas = ({ item, onClick }) => (
+      <div style={row} onClick={onClick}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
+          <span style={{ fontSize: 15, fontWeight: 500 }}>{item.nombre}</span>
+          <span style={{ fontSize: 16, fontWeight: 700, color: color(pct(item.hm3, item.capacidad)) }}>{pct(item.hm3, item.capacidad)}%</span>
+        </div>
+        <Bar v={item.hm3} c={item.capacidad} />
+        <div style={{ display: "flex", gap: 14, marginTop: 8, flexWrap: "wrap" }}>
+          <span style={{ fontSize: 12, color: "rgba(255,255,255,0.4)" }}>{fmt(item.hm3)}</span>
+          <span style={{ fontSize: 12, color: "rgba(255,255,255,0.3)" }}>hace 1a: {pct(item.hace1year, item.capacidad)}%</span>
+          <span style={{ fontSize: 12, color: "rgba(255,255,255,0.3)" }}>media 10a: {pct(item.media10, item.capacidad)}%</span>
+        </div>
+      </div>
+    );
+
+    const Detalle = ({ tipo, item, onEmbalse }) => {
+      const p = pct(item.hm3, item.capacidad);
+      const emb = EMBALSES.filter(e => {
+        if (tipo === "cuenca") return e.cuenca === item.nombre;
+        if (tipo === "ccaa") return e.ccaa === item.nombre;
+        if (tipo === "provincia") return norm(e.provincia) === norm(item.nombre);
+        return false;
+      });
+      return (
+        <div>
+          <p style={{ margin: "0 0 4px", fontSize: 11, color: "rgba(255,255,255,0.3)", letterSpacing: ".1em", textTransform: "uppercase" }}>{tipo === "cuenca" ? "Cuenca" : tipo === "ccaa" ? "Comunidad autónoma" : "Provincia"}</p>
+          <p style={{ margin: "0 0 16px", fontSize: 26, fontWeight: 700 }}>{item.nombre}</p>
+          <p style={{ margin: "0 0 10px", fontSize: 52, fontWeight: 800, letterSpacing: "-.04em", color: color(p) }}>{p}%</p>
+          <Bar v={item.hm3} c={item.capacidad} h={8} />
+          <div style={{ display: "flex", gap: 10, marginTop: 18, flexWrap: "wrap" }}>
+            <KPI label="Hoy" v={item.hm3} c={item.capacidad} />
+            <KPI label="Hace 1 año" v={item.hace1year} c={item.capacidad} accent="rgba(255,255,255,0.5)" sub={`Δ ${item.hm3 > item.hace1year ? "+" : ""}${Math.round(item.hm3 - item.hace1year)} hm³`} />
+            <KPI label="Media 10 años" v={item.media10} c={item.capacidad} accent="rgba(255,255,255,0.35)" sub={`Δ ${item.hm3 > item.media10 ? "+" : ""}${Math.round(item.hm3 - item.media10)} hm³`} />
+          </div>
+          <div style={{ display: "flex", gap: 16, marginTop: 12, flexWrap: "wrap" }}>
+            <Delta a={item.hm3} r={item.hace1year} label="vs año anterior" />
+            <Delta a={item.hm3} r={item.media10} label="vs media 10 años" />
+          </div>
+          {emb.length > 0 && (
+            <>
+              <p style={{ margin: "24px 0 10px", fontSize: 12, color: "rgba(255,255,255,0.3)" }}>Embalses ({emb.length})</p>
+              {emb.map(e => <Item key={e.id} nombre={e.nombre} sub={tipo !== "provincia" ? e.provincia : e.cuenca} hm3={e.hm3} capacidad={e.capacidad} onClick={() => onEmbalse(e.id)} />)}
+            </>
+          )}
+        </div>
+      );
+    };
 
     function App() {
       const [vista, setVista] = useState("nacional");
-      const [seleccion, setSeleccion] = useState(null);
-      const [busqueda, setBusqueda] = useState("");
-      const [query, setQuery] = useState("");
-      const [iaRespuesta, setIaRespuesta] = useState("");
-      const [iaCargando, setIaCargando] = useState(false);
+      const [sel, setSel] = useState(null);
+      const [q, setQ] = useState("");
 
-      const navegar = (v) => { setVista(v); setSeleccion(null); setBusqueda(""); setIaRespuesta(""); };
+      const go = (v) => { setVista(v); setSel(null); setQ(""); };
 
-      const embalsesFiltrados = EMBALSES.filter(e =>
-        busqueda.length < 2 ? false :
-          e.nombre.toLowerCase().includes(busqueda.toLowerCase()) ||
-          e.provincia.toLowerCase().includes(busqueda.toLowerCase()) ||
-          e.cuenca.toLowerCase().includes(busqueda.toLowerCase())
+      const termino = norm(q.trim());
+      const resultados = termino.length < 2 ? [] : EMBALSES.filter(e =>
+        norm(e.nombre).includes(termino) ||
+        norm(e.provincia).includes(termino) ||
+        norm(e.cuenca).includes(termino) ||
+        norm(e.ccaa).includes(termino)
       );
 
-      const consultarIA = async () => {
-        if (!query.trim()) return;
-        setIaCargando(true);
-        setIaRespuesta("");
-        const contexto = `Eres un experto en recursos hídricos de España. Tienes acceso a datos actuales de embalses:
-TOTAL ESPAÑA: ${TOTAL_ESPANA.hm3} hm³ (${pct(TOTAL_ESPANA.hm3, TOTAL_ESPANA.capacidad)}% capacidad), hace 1 año: ${TOTAL_ESPANA.hace1year} hm³, media 10 años: ${TOTAL_ESPANA.media10} hm³.
-CUENCAS: ${CUENCAS.map(c => `${c.nombre}: ${c.hm3} hm³ (${pct(c.hm3, c.capacidad)}%)`).join(", ")}
-EMBALSES: ${EMBALSES.slice(0,15).map(e => `${e.nombre} (${e.provincia}): ${e.hm3}/${e.capacidad} hm³ (${pct(e.hm3,e.capacidad)}%)`).join(", ")}
-Responde en español, de forma concisa. Máximo 3 párrafos.`;
-        try {
-          const resp = await fetch("https://api.anthropic.com/v1/messages", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              model: "claude-sonnet-4-20250514",
-              max_tokens: 1000,
-              system: contexto,
-              messages: [{ role: "user", content: query }]
-            })
-          });
-          const data = await resp.json();
-          setIaRespuesta(data.content?.[0]?.text || "Sin respuesta.");
-        } catch {
-          setIaRespuesta("Error al conectar con el asistente.");
-        }
-        setIaCargando(false);
-      };
-
-      const navItems = [
+      const navs = [
         { id: "nacional", label: "España" },
         { id: "cuencas", label: "Cuencas" },
         { id: "ccaa", label: "CC.AA." },
+        { id: "provincias", label: "Provincias" },
         { id: "embalses", label: "Embalses" },
-        { id: "asistente", label: "IA" },
       ];
 
-      const rowStyle = {
-        background: "rgba(255,255,255,0.03)",
-        border: "1px solid rgba(255,255,255,0.06)",
-        borderRadius: 12,
-        padding: "14px 18px",
-        cursor: "pointer",
-        marginBottom: 8,
-        transition: "background .15s",
-      };
+      const embalseActual = vista === "embalses" && sel ? EMBALSES.find(e => e.id === sel) : null;
 
       return (
         <div style={{ minHeight: "100vh", background: "#0a0a0f", color: "#fff" }}>
-          {/* Header */}
           <div style={{ borderBottom: "1px solid rgba(255,255,255,0.06)", padding: "0 20px", position: "sticky", top: 0, background: "#0a0a0f", zIndex: 10 }}>
-            <div style={{ maxWidth: 860, margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "space-between", height: 52, flexWrap: "wrap", gap: 8 }}>
+            <div style={{ maxWidth: 860, margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "space-between", height: 52 }}>
               <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                 <div style={{ width: 7, height: 7, borderRadius: "50%", background: "#3b82f6" }} />
-                <span style={{ fontSize: 15, fontWeight: 600, letterSpacing: "-0.01em" }}>
-                  embalses<span style={{ color: "rgba(255,255,255,0.3)" }}>.es</span>
-                </span>
+                <span style={{ fontSize: 15, fontWeight: 600 }}>embalses<span style={{ color: "rgba(255,255,255,0.3)" }}>.es</span></span>
               </div>
               <nav style={{ display: "flex", gap: 2 }}>
-                {navItems.map(({ id, label }) => (
-                  <button key={id} onClick={() => navegar(id)} style={{
-                    background: vista === id ? "rgba(255,255,255,0.09)" : "none",
-                    border: "none", color: vista === id ? "#fff" : "rgba(255,255,255,0.4)",
-                    fontSize: 13, cursor: "pointer", padding: "7px 14px", borderRadius: 99,
-                  }}>{label}</button>
+                {navs.map(({ id, label }) => (
+                  <button key={id} onClick={() => go(id)} style={{ background: vista === id ? "rgba(255,255,255,0.09)" : "none", border: "none", color: vista === id ? "#fff" : "rgba(255,255,255,0.4)", fontSize: 13, cursor: "pointer", padding: "7px 12px", borderRadius: 99 }}>{label}</button>
                 ))}
               </nav>
             </div>
@@ -224,264 +288,117 @@ Responde en español, de forma concisa. Máximo 3 párrafos.`;
 
           <div style={{ maxWidth: 860, margin: "0 auto", padding: "28px 20px 60px" }}>
 
-            {/* ── NACIONAL ── */}
-            {vista === "nacional" && (
-              <div>
-                <p style={{ margin: "0 0 4px", fontSize: 11, color: "rgba(255,255,255,0.3)", letterSpacing: "0.1em", textTransform: "uppercase" }}>Reserva total · España</p>
-                <p style={{ margin: "0 0 10px", fontSize: 64, fontWeight: 800, letterSpacing: "-0.05em", lineHeight: 1, color: colorPct(pct(TOTAL_ESPANA.hm3, TOTAL_ESPANA.capacidad)) }}>
-                  {pct(TOTAL_ESPANA.hm3, TOTAL_ESPANA.capacidad)}<span style={{ fontSize: 30, fontWeight: 400, color: "rgba(255,255,255,0.3)" }}>%</span>
-                </p>
-                <p style={{ margin: "0 0 14px", fontSize: 16, color: "rgba(255,255,255,0.45)", fontWeight: 300 }}>
-                  {fmtSolo(TOTAL_ESPANA.hm3)} de {fmtSolo(TOTAL_ESPANA.capacidad)} de capacidad total
-                </p>
-                <GaugeBar valor={TOTAL_ESPANA.hm3} capacidad={TOTAL_ESPANA.capacidad} height={8} />
-                <div style={{ display: "flex", gap: 10, marginTop: 24, marginBottom: 16, flexWrap: "wrap" }}>
-                  <KPICard label="Hoy" valor={TOTAL_ESPANA.hm3} capacidad={TOTAL_ESPANA.capacidad} sub="Actualizado esta semana" />
-                  <KPICard label="Hace 1 año" valor={TOTAL_ESPANA.hace1year} capacidad={TOTAL_ESPANA.capacidad} accent="rgba(255,255,255,0.5)" sub={`Δ ${TOTAL_ESPANA.hm3 > TOTAL_ESPANA.hace1year ? "+" : ""}${Math.round(TOTAL_ESPANA.hm3 - TOTAL_ESPANA.hace1year)} hm³`} />
-                  <KPICard label="Media 10 años" valor={TOTAL_ESPANA.media10} capacidad={TOTAL_ESPANA.capacidad} accent="rgba(255,255,255,0.35)" sub={`Δ ${TOTAL_ESPANA.hm3 > TOTAL_ESPANA.media10 ? "+" : ""}${Math.round(TOTAL_ESPANA.hm3 - TOTAL_ESPANA.media10)} hm³`} />
-                </div>
-                <div style={{ display: "flex", gap: 16, marginBottom: 32, flexWrap: "wrap" }}>
-                  <DeltaBadge actual={TOTAL_ESPANA.hm3} referencia={TOTAL_ESPANA.hace1year} label="vs año anterior" />
-                  <DeltaBadge actual={TOTAL_ESPANA.hm3} referencia={TOTAL_ESPANA.media10} label="vs media 10 años" />
-                </div>
-                <p style={{ margin: "0 0 14px", fontSize: 11, color: "rgba(255,255,255,0.3)", letterSpacing: "0.08em", textTransform: "uppercase" }}>Estado por cuenca</p>
-                {[...CUENCAS].sort((a, b) => pct(b.hm3, b.capacidad) - pct(a.hm3, a.capacidad)).map(c => {
-                  const p = pct(c.hm3, c.capacidad);
-                  return (
-                    <div key={c.id} style={rowStyle} onClick={() => { setVista("cuencas"); setSeleccion(c.id); }}>
-                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
-                        <span style={{ fontSize: 14, color: "rgba(255,255,255,0.85)" }}>{c.nombre}</span>
-                        <span style={{ fontSize: 14, fontWeight: 600, color: colorPct(p) }}>{p}%</span>
-                      </div>
-                      <GaugeBar valor={c.hm3} capacidad={c.capacidad} height={4} />
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-
-            {/* ── CUENCAS LISTA ── */}
-            {vista === "cuencas" && !seleccion && (
-              <div>
-                <p style={{ margin: "0 0 20px", fontSize: 22, fontWeight: 700, letterSpacing: "-0.02em" }}>Cuencas hidrográficas</p>
-                {[...CUENCAS].sort((a, b) => b.capacidad - a.capacidad).map(c => {
-                  const p = pct(c.hm3, c.capacidad);
-                  return (
-                    <div key={c.id} style={rowStyle} onClick={() => setSeleccion(c.id)}>
-                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
-                        <span style={{ fontSize: 15, fontWeight: 500 }}>{c.nombre}</span>
-                        <span style={{ fontSize: 18, fontWeight: 700, color: colorPct(p) }}>{p}%</span>
-                      </div>
-                      <GaugeBar valor={c.hm3} capacidad={c.capacidad} />
-                      <div style={{ display: "flex", gap: 14, marginTop: 8, flexWrap: "wrap" }}>
-                        <span style={{ fontSize: 12, color: "rgba(255,255,255,0.4)" }}>{fmtSolo(c.hm3)} actuales</span>
-                        <span style={{ fontSize: 12, color: "rgba(255,255,255,0.3)" }}>hace 1a: {pct(c.hace1year, c.capacidad)}%</span>
-                        <span style={{ fontSize: 12, color: "rgba(255,255,255,0.3)" }}>media 10a: {pct(c.media10, c.capacidad)}%</span>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-
-            {/* ── CUENCA DETALLE ── */}
-            {vista === "cuencas" && seleccion && (() => {
-              const c = CUENCAS.find(x => x.id === seleccion);
-              if (!c) return null;
-              const p = pct(c.hm3, c.capacidad);
-              const embalsesC = EMBALSES.filter(e => e.cuenca === c.nombre);
+            {/* NACIONAL */}
+            {vista === "nacional" && (() => {
+              const p = pct(TOTAL.hm3, TOTAL.capacidad);
               return (
                 <div>
-                  <BtnVolver onClick={() => setSeleccion(null)} />
-                  <p style={{ margin: "0 0 4px", fontSize: 11, color: "rgba(255,255,255,0.3)", letterSpacing: "0.1em", textTransform: "uppercase" }}>Cuenca del {c.nombre}</p>
-                  <p style={{ margin: "0 0 20px", fontSize: 52, fontWeight: 800, letterSpacing: "-0.04em", color: colorPct(p) }}>{p}%</p>
-                  <GaugeBar valor={c.hm3} capacidad={c.capacidad} height={8} />
-                  <div style={{ display: "flex", gap: 10, marginTop: 20, flexWrap: "wrap" }}>
-                    <KPICard label="Hoy" valor={c.hm3} capacidad={c.capacidad} />
-                    <KPICard label="Hace 1 año" valor={c.hace1year} capacidad={c.capacidad} accent="rgba(255,255,255,0.5)" sub={`Δ ${c.hm3 > c.hace1year ? "+" : ""}${Math.round(c.hm3 - c.hace1year)} hm³`} />
-                    <KPICard label="Media 10 años" valor={c.media10} capacidad={c.capacidad} accent="rgba(255,255,255,0.35)" sub={`Δ ${c.hm3 > c.media10 ? "+" : ""}${Math.round(c.hm3 - c.media10)} hm³`} />
+                  <p style={{ margin: "0 0 4px", fontSize: 11, color: "rgba(255,255,255,0.3)", letterSpacing: ".1em", textTransform: "uppercase" }}>Reserva total · España</p>
+                  <p style={{ margin: "0 0 8px", fontSize: 64, fontWeight: 800, letterSpacing: "-.05em", lineHeight: 1, color: color(p) }}>{p}<span style={{ fontSize: 30, fontWeight: 400, color: "rgba(255,255,255,0.3)" }}>%</span></p>
+                  <p style={{ margin: "0 0 14px", fontSize: 15, color: "rgba(255,255,255,0.4)" }}>{fmt(TOTAL.hm3)} de {fmt(TOTAL.capacidad)} de capacidad total</p>
+                  <Bar v={TOTAL.hm3} c={TOTAL.capacidad} h={8} />
+                  <div style={{ display: "flex", gap: 10, marginTop: 18, flexWrap: "wrap" }}>
+                    <KPI label="Hoy" v={TOTAL.hm3} c={TOTAL.capacidad} sub="Actualizado esta semana" />
+                    <KPI label="Hace 1 año" v={TOTAL.hace1year} c={TOTAL.capacidad} accent="rgba(255,255,255,0.5)" sub={`Δ ${TOTAL.hm3 > TOTAL.hace1year ? "+" : ""}${Math.round(TOTAL.hm3 - TOTAL.hace1year)} hm³`} />
+                    <KPI label="Media 10 años" v={TOTAL.media10} c={TOTAL.capacidad} accent="rgba(255,255,255,0.35)" sub={`Δ ${TOTAL.hm3 > TOTAL.media10 ? "+" : ""}${Math.round(TOTAL.hm3 - TOTAL.media10)} hm³`} />
                   </div>
-                  {embalsesC.length > 0 && <>
-                    <p style={{ margin: "24px 0 10px", fontSize: 12, color: "rgba(255,255,255,0.3)" }}>Embalses en esta cuenca</p>
-                    {embalsesC.map(e => {
-                      const ep = pct(e.hm3, e.capacidad);
-                      return (
-                        <div key={e.id} style={rowStyle} onClick={() => { setVista("embalses"); setSeleccion(e.id); }}>
-                          <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
-                            <span style={{ fontSize: 14 }}>{e.nombre}</span>
-                            <span style={{ fontSize: 14, fontWeight: 600, color: colorPct(ep) }}>{ep}%</span>
-                          </div>
-                          <GaugeBar valor={e.hm3} capacidad={e.capacidad} />
-                        </div>
-                      );
-                    })}
-                  </>}
+                  <div style={{ display: "flex", gap: 16, marginTop: 12, marginBottom: 28, flexWrap: "wrap" }}>
+                    <Delta a={TOTAL.hm3} r={TOTAL.hace1year} label="vs año anterior" />
+                    <Delta a={TOTAL.hm3} r={TOTAL.media10} label="vs media 10 años" />
+                  </div>
+                  <p style={{ margin: "0 0 12px", fontSize: 11, color: "rgba(255,255,255,0.3)", letterSpacing: ".08em", textTransform: "uppercase" }}>Por cuenca</p>
+                  {[...CUENCAS].sort((a, b) => pct(b.hm3, b.capacidad) - pct(a.hm3, a.capacidad)).map(c => (
+                    <Item key={c.id} nombre={c.nombre} hm3={c.hm3} capacidad={c.capacidad} onClick={() => { setVista("cuencas"); setSel(c.id); }} />
+                  ))}
                 </div>
               );
             })()}
 
-            {/* ── CCAA LISTA ── */}
-            {vista === "ccaa" && !seleccion && (
+            {/* CUENCAS */}
+            {vista === "cuencas" && !sel && (
               <div>
-                <p style={{ margin: "0 0 20px", fontSize: 22, fontWeight: 700, letterSpacing: "-0.02em" }}>Comunidades autónomas</p>
-                {[...CCAA].sort((a, b) => b.hm3 - a.hm3).map(c => {
-                  const p = pct(c.hm3, c.capacidad);
-                  return (
-                    <div key={c.id} style={rowStyle} onClick={() => setSeleccion(c.id)}>
-                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
-                        <span style={{ fontSize: 15, fontWeight: 500 }}>{c.nombre}</span>
-                        <span style={{ fontSize: 18, fontWeight: 700, color: colorPct(p) }}>{p}%</span>
-                      </div>
-                      <GaugeBar valor={c.hm3} capacidad={c.capacidad} />
-                      <div style={{ display: "flex", gap: 14, marginTop: 8, flexWrap: "wrap" }}>
-                        <span style={{ fontSize: 12, color: "rgba(255,255,255,0.4)" }}>{fmtSolo(c.hm3)}</span>
-                        <span style={{ fontSize: 12, color: "rgba(255,255,255,0.3)" }}>hace 1a: {pct(c.hace1year, c.capacidad)}%</span>
-                        <span style={{ fontSize: 12, color: "rgba(255,255,255,0.3)" }}>media 10a: {pct(c.media10, c.capacidad)}%</span>
-                      </div>
-                    </div>
-                  );
-                })}
+                <p style={{ margin: "0 0 18px", fontSize: 22, fontWeight: 700, letterSpacing: "-.02em" }}>Cuencas hidrográficas</p>
+                {[...CUENCAS].sort((a, b) => b.capacidad - a.capacidad).map(c => <ItemConMetricas key={c.id} item={c} onClick={() => setSel(c.id)} />)}
               </div>
             )}
-
-            {/* ── CCAA DETALLE ── */}
-            {vista === "ccaa" && seleccion && (() => {
-              const c = CCAA.find(x => x.id === seleccion);
-              if (!c) return null;
-              const p = pct(c.hm3, c.capacidad);
-              const embalsesC = EMBALSES.filter(e => e.ccaa === c.nombre);
-              return (
-                <div>
-                  <BtnVolver onClick={() => setSeleccion(null)} />
-                  <p style={{ margin: "0 0 4px", fontSize: 11, color: "rgba(255,255,255,0.3)", letterSpacing: "0.1em", textTransform: "uppercase" }}>{c.nombre}</p>
-                  <p style={{ margin: "0 0 20px", fontSize: 52, fontWeight: 800, letterSpacing: "-0.04em", color: colorPct(p) }}>{p}%</p>
-                  <GaugeBar valor={c.hm3} capacidad={c.capacidad} height={8} />
-                  <div style={{ display: "flex", gap: 10, marginTop: 20, flexWrap: "wrap" }}>
-                    <KPICard label="Hoy" valor={c.hm3} capacidad={c.capacidad} />
-                    <KPICard label="Hace 1 año" valor={c.hace1year} capacidad={c.capacidad} accent="rgba(255,255,255,0.5)" sub={`Δ ${c.hm3 > c.hace1year ? "+" : ""}${Math.round(c.hm3 - c.hace1year)} hm³`} />
-                    <KPICard label="Media 10 años" valor={c.media10} capacidad={c.capacidad} accent="rgba(255,255,255,0.35)" sub={`Δ ${c.hm3 > c.media10 ? "+" : ""}${Math.round(c.hm3 - c.media10)} hm³`} />
-                  </div>
-                  {embalsesC.length > 0 && <>
-                    <p style={{ margin: "24px 0 10px", fontSize: 12, color: "rgba(255,255,255,0.3)" }}>Embalses en {c.nombre}</p>
-                    {embalsesC.map(e => {
-                      const ep = pct(e.hm3, e.capacidad);
-                      return (
-                        <div key={e.id} style={rowStyle} onClick={() => { setVista("embalses"); setSeleccion(e.id); }}>
-                          <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
-                            <span style={{ fontSize: 14 }}>{e.nombre} <span style={{ color: "rgba(255,255,255,0.3)", fontSize: 12 }}>· {e.provincia}</span></span>
-                            <span style={{ fontSize: 14, fontWeight: 600, color: colorPct(ep) }}>{ep}%</span>
-                          </div>
-                          <GaugeBar valor={e.hm3} capacidad={e.capacidad} />
-                        </div>
-                      );
-                    })}
-                  </>}
-                </div>
-              );
+            {vista === "cuencas" && sel && (() => {
+              const c = CUENCAS.find(x => x.id === sel);
+              return c ? <div><Volver onClick={() => setSel(null)} /><Detalle tipo="cuenca" item={c} onEmbalse={(id) => { setVista("embalses"); setSel(id); }} /></div> : null;
             })()}
 
-            {/* ── EMBALSES LISTA + BÚSQUEDA ── */}
-            {vista === "embalses" && !seleccion && (
+            {/* CC.AA. */}
+            {vista === "ccaa" && !sel && (
               <div>
-                <p style={{ margin: "0 0 16px", fontSize: 22, fontWeight: 700, letterSpacing: "-0.02em" }}>Buscar embalse</p>
+                <p style={{ margin: "0 0 18px", fontSize: 22, fontWeight: 700, letterSpacing: "-.02em" }}>Comunidades autónomas</p>
+                {[...CCAA].sort((a, b) => b.hm3 - a.hm3).map(c => <ItemConMetricas key={c.id} item={c} onClick={() => setSel(c.id)} />)}
+              </div>
+            )}
+            {vista === "ccaa" && sel && (() => {
+              const c = CCAA.find(x => x.id === sel);
+              return c ? <div><Volver onClick={() => setSel(null)} /><Detalle tipo="ccaa" item={c} onEmbalse={(id) => { setVista("embalses"); setSel(id); }} /></div> : null;
+            })()}
+
+            {/* PROVINCIAS */}
+            {vista === "provincias" && !sel && (
+              <div>
+                <p style={{ margin: "0 0 18px", fontSize: 22, fontWeight: 700, letterSpacing: "-.02em" }}>Provincias</p>
+                {[...PROVINCIAS].sort((a, b) => b.hm3 - a.hm3).map(p => <ItemConMetricas key={p.id} item={p} onClick={() => setSel(p.id)} />)}
+              </div>
+            )}
+            {vista === "provincias" && sel && (() => {
+              const p = PROVINCIAS.find(x => x.id === sel);
+              return p ? <div><Volver onClick={() => setSel(null)} /><Detalle tipo="provincia" item={p} onEmbalse={(id) => { setVista("embalses"); setSel(id); }} /></div> : null;
+            })()}
+
+            {/* EMBALSES */}
+            {vista === "embalses" && !sel && (
+              <div>
+                <p style={{ margin: "0 0 14px", fontSize: 22, fontWeight: 700, letterSpacing: "-.02em" }}>Buscar embalse</p>
                 <input
-                  value={busqueda}
-                  onChange={e => setBusqueda(e.target.value)}
-                  placeholder="Nombre, provincia o cuenca…"
-                  style={{ width: "100%", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 12, padding: "12px 16px", color: "#fff", fontSize: 15, marginBottom: 20 }}
+                  value={q}
+                  onChange={e => setQ(e.target.value)}
+                  placeholder="Nombre, provincia, cuenca o comunidad…"
+                  style={{ width: "100%", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 12, padding: "12px 16px", color: "#fff", fontSize: 15, marginBottom: 16 }}
                 />
-                {busqueda.length >= 2 && embalsesFiltrados.length === 0 && (
-                  <p style={{ color: "rgba(255,255,255,0.4)", fontSize: 14 }}>Sin resultados para "{busqueda}"</p>
+                {termino.length >= 2 && (
+                  <p style={{ fontSize: 12, color: "rgba(255,255,255,0.3)", marginBottom: 10 }}>
+                    {resultados.length === 0 ? `Sin resultados para "${q}"` : `${resultados.length} resultado${resultados.length !== 1 ? "s" : ""}`}
+                  </p>
                 )}
-                {(busqueda.length < 2 ? [...EMBALSES].sort((a,b) => b.capacidad - a.capacidad) : embalsesFiltrados).map(e => {
-                  const p = pct(e.hm3, e.capacidad);
-                  return (
-                    <div key={e.id} style={rowStyle} onClick={() => setSeleccion(e.id)}>
-                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
-                        <div>
-                          <span style={{ fontSize: 14, fontWeight: 500 }}>{e.nombre}</span>
-                          <span style={{ fontSize: 12, color: "rgba(255,255,255,0.3)", marginLeft: 8 }}>{e.provincia} · {e.cuenca}</span>
-                        </div>
-                        <span style={{ fontSize: 15, fontWeight: 700, color: colorPct(p) }}>{p}%</span>
-                      </div>
-                      <GaugeBar valor={e.hm3} capacidad={e.capacidad} />
-                    </div>
-                  );
-                })}
+                {(termino.length < 2 ? [...EMBALSES].sort((a, b) => b.capacidad - a.capacidad) : resultados).map(e => (
+                  <Item key={e.id} nombre={e.nombre} sub={`${e.provincia} · ${e.cuenca}`} hm3={e.hm3} capacidad={e.capacidad} onClick={() => setSel(e.id)} />
+                ))}
               </div>
             )}
-
-            {/* ── EMBALSE DETALLE ── */}
-            {vista === "embalses" && seleccion && (() => {
-              const e = EMBALSES.find(x => x.id === seleccion);
-              if (!e) return null;
+            {vista === "embalses" && sel && embalseActual && (() => {
+              const e = embalseActual;
               const p = pct(e.hm3, e.capacidad);
               return (
                 <div>
-                  <BtnVolver onClick={() => setSeleccion(null)} />
-                  <p style={{ margin: "0 0 2px", fontSize: 11, color: "rgba(255,255,255,0.3)", letterSpacing: "0.1em", textTransform: "uppercase" }}>Embalse</p>
-                  <p style={{ margin: "0 0 4px", fontSize: 28, fontWeight: 700, letterSpacing: "-0.02em" }}>{e.nombre}</p>
-                  <p style={{ margin: "0 0 20px", fontSize: 13, color: "rgba(255,255,255,0.35)" }}>{e.provincia} · {e.cuenca} · {e.ccaa}</p>
-                  <p style={{ margin: "0 0 8px", fontSize: 52, fontWeight: 800, letterSpacing: "-0.04em", color: colorPct(p) }}>{p}%</p>
-                  <GaugeBar valor={e.hm3} capacidad={e.capacidad} height={8} />
-                  <div style={{ display: "flex", gap: 10, marginTop: 20, flexWrap: "wrap" }}>
-                    <KPICard label="Hoy" valor={e.hm3} capacidad={e.capacidad} />
-                    <KPICard label="Hace 1 año" valor={e.hace1year} capacidad={e.capacidad} accent="rgba(255,255,255,0.5)" sub={`Δ ${e.hm3 > e.hace1year ? "+" : ""}${Math.round(e.hm3 - e.hace1year)} hm³`} />
-                    <KPICard label="Media 10 años" valor={e.media10} capacidad={e.capacidad} accent="rgba(255,255,255,0.35)" sub={`Δ ${e.hm3 > e.media10 ? "+" : ""}${Math.round(e.hm3 - e.media10)} hm³`} />
+                  <Volver onClick={() => setSel(null)} />
+                  <p style={{ margin: "0 0 2px", fontSize: 11, color: "rgba(255,255,255,0.3)", letterSpacing: ".1em", textTransform: "uppercase" }}>Embalse</p>
+                  <p style={{ margin: "0 0 5px", fontSize: 26, fontWeight: 700 }}>{e.nombre}</p>
+                  <p style={{ margin: "0 0 16px", fontSize: 13, color: "rgba(255,255,255,0.35)" }}>{e.provincia} · {e.cuenca} · {e.ccaa}</p>
+                  <p style={{ margin: "0 0 10px", fontSize: 52, fontWeight: 800, letterSpacing: "-.04em", color: color(p) }}>{p}%</p>
+                  <Bar v={e.hm3} c={e.capacidad} h={8} />
+                  <div style={{ display: "flex", gap: 10, marginTop: 18, flexWrap: "wrap" }}>
+                    <KPI label="Hoy" v={e.hm3} c={e.capacidad} />
+                    <KPI label="Hace 1 año" v={e.hace1year} c={e.capacidad} accent="rgba(255,255,255,0.5)" sub={`Δ ${e.hm3 > e.hace1year ? "+" : ""}${Math.round(e.hm3 - e.hace1year)} hm³`} />
+                    <KPI label="Media 10 años" v={e.media10} c={e.capacidad} accent="rgba(255,255,255,0.35)" sub={`Δ ${e.hm3 > e.media10 ? "+" : ""}${Math.round(e.hm3 - e.media10)} hm³`} />
                   </div>
-                  <div style={{ marginTop: 20, padding: "16px 20px", background: "rgba(255,255,255,0.03)", borderRadius: 12, border: "1px solid rgba(255,255,255,0.06)" }}>
-                    <p style={{ margin: "0 0 10px", fontSize: 11, color: "rgba(255,255,255,0.3)", textTransform: "uppercase", letterSpacing: "0.08em" }}>Comparativa</p>
-                    <div style={{ display: "flex", gap: 20, flexWrap: "wrap" }}>
-                      <DeltaBadge actual={e.hm3} referencia={e.hace1year} label="vs año anterior" />
-                      <DeltaBadge actual={e.hm3} referencia={e.media10} label="vs media 10 años" />
-                    </div>
+                  <div style={{ display: "flex", gap: 16, marginTop: 12, flexWrap: "wrap" }}>
+                    <Delta a={e.hm3} r={e.hace1year} label="vs año anterior" />
+                    <Delta a={e.hm3} r={e.media10} label="vs media 10 años" />
                   </div>
                 </div>
               );
             })()}
 
-            {/* ── ASISTENTE IA ── */}
-            {vista === "asistente" && (
-              <div>
-                <p style={{ margin: "0 0 8px", fontSize: 22, fontWeight: 700, letterSpacing: "-0.02em" }}>Asistente de embalses</p>
-                <p style={{ margin: "0 0 24px", fontSize: 14, color: "rgba(255,255,255,0.4)" }}>Pregúntame sobre cualquier embalse, cuenca o situación hídrica de España.</p>
-                <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 16 }}>
-                  {[
-                    "¿Cuál es la situación del Guadalquivir?",
-                    "¿Qué cuenca tiene menor reserva ahora mismo?",
-                    "¿Estamos mejor o peor que el año pasado?",
-                    "¿Cómo está Extremadura respecto a la media?",
-                  ].map(s => (
-                    <button key={s} onClick={() => setQuery(s)} style={{ textAlign: "left", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 10, padding: "10px 16px", color: "rgba(255,255,255,0.6)", fontSize: 13, cursor: "pointer" }}>{s}</button>
-                  ))}
-                </div>
-                <div style={{ display: "flex", gap: 10, marginBottom: 20 }}>
-                  <input
-                    value={query}
-                    onChange={e => setQuery(e.target.value)}
-                    onKeyDown={e => e.key === "Enter" && consultarIA()}
-                    placeholder="Escribe tu pregunta…"
-                    style={{ flex: 1, background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 12, padding: "12px 16px", color: "#fff", fontSize: 14 }}
-                  />
-                  <button onClick={consultarIA} disabled={iaCargando || !query.trim()} style={{ background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.15)", color: "#fff", borderRadius: 10, padding: "10px 20px", cursor: iaCargando ? "not-allowed" : "pointer", fontSize: 13, opacity: iaCargando || !query.trim() ? 0.4 : 1 }}>
-                    {iaCargando ? "…" : "Preguntar"}
-                  </button>
-                </div>
-                {iaCargando && <p style={{ color: "rgba(255,255,255,0.4)", fontSize: 14 }}>Consultando…</p>}
-                {iaRespuesta && (
-                  <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 16, padding: "20px 24px" }}>
-                    <p style={{ margin: "0 0 8px", fontSize: 11, color: "rgba(255,255,255,0.25)", letterSpacing: "0.1em", textTransform: "uppercase" }}>Respuesta</p>
-                    <p style={{ margin: 0, fontSize: 14, color: "rgba(255,255,255,0.8)", lineHeight: 1.7, whiteSpace: "pre-wrap" }}>{iaRespuesta}</p>
-                  </div>
-                )}
-              </div>
-            )}
           </div>
 
-          {/* Footer */}
           <div style={{ borderTop: "1px solid rgba(255,255,255,0.05)", padding: "16px 24px" }}>
             <p style={{ margin: 0, textAlign: "center", fontSize: 12, color: "rgba(255,255,255,0.2)" }}>
-              Datos: <a href="https://www.embalses.net" target="_blank" rel="noopener noreferrer" style={{ color: "rgba(255,255,255,0.35)", textDecoration: "none" }}>embalses.net</a> · Ministerio de Transición Ecológica · Actualización semanal
+              Datos: <a href="https://www.embalses.net" target="_blank" rel="noopener noreferrer" style={{ color: "rgba(255,255,255,0.3)", textDecoration: "none" }}>embalses.net</a> · Ministerio de Transición Ecológica
             </p>
           </div>
         </div>
