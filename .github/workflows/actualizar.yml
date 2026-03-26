@@ -2,15 +2,12 @@ name: Actualizar datos embalses
 
 on:
   schedule:
-    # Cada martes a las 10:00 (el Ministerio publica los martes)
-    - cron: "0 10 * * 2"
-  workflow_dispatch:
-    # También se puede lanzar manualmente desde GitHub
+    - cron: "0 10 * * 2"  # cada martes a las 10:00
+  workflow_dispatch:       # también lanzable manualmente
 
 jobs:
   actualizar:
     runs-on: ubuntu-latest
-
     permissions:
       contents: write
 
@@ -23,9 +20,6 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Instalar dependencias
-        run: pip install openpyxl
-
       - name: Ejecutar script de datos
         run: python procesar.py
 
@@ -34,5 +28,5 @@ jobs:
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add datos.json
-          git diff --cached --quiet || git commit -m "Datos embalses actualizados $(date +'%Y-%m-%d')"
+          git diff --cached --quiet || git commit -m "Datos embalses $(date +'%Y-%m-%d')"
           git push
