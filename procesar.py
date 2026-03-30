@@ -3,7 +3,7 @@
 Scraping de embalses.net para obtener datos reales.
 Datos: Ministerio de Transición Ecológica, CC BY 4.0, via embalses.net
 """
-import json, re, time, datetime, sys, urllib.request
+import json, re, time, datetime, sys, urllib.request, gzip as gzip_mod
  
 BASE  = "https://www.embalses.net"
 TODAY = str(datetime.date.today())
@@ -149,7 +149,6 @@ META = {
     "camarasa":              ("Cuencas Internas Cataluña", "Lleida",        "Cataluña"),
 }
  
-# URLs reales de cuencas (verificadas desde el HTML de embalses.net)
 CUENCAS_URLS = [
     "cuenca-1-segura.html",
     "cuenca-2-duero.html",
@@ -177,78 +176,86 @@ def norm(s):
  
 def buscar_meta(nombre):
     clave = norm(nombre)
-    if clave in META:
-        return META[clave]
+    if clave in META: return META[clave]
     for k, v in META.items():
-        if k in clave or clave in k:
-            return v
+        if k in clave or clave in k: return v
     return ("Desconocida", "Desconocida", "Desconocida")
  
 def fetch(url):
     headers = {
         "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/122.0 Safari/537.36",
-        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-        "Accept-Language": "es-ES,es;q=0.9,en;q=0.8",
+        "Accept": "text/html,application/xhtml+xml",
+        "Accept-Language": "es-ES,es;q=0.9",
         "Accept-Encoding": "gzip, deflate",
-        "Connection": "keep-alive",
         "Referer": "https://www.embalses.net/",
     }
     req = urllib.request.Request(url, headers=headers)
     with urllib.request.urlopen(req, timeout=30) as r:
         raw = r.read()
-        # manejar gzip
-        if r.info().get("Content-Encoding") == "gzip":
-            import gzip
-            raw = gzip.decompress(raw)
+        enc = r.info().get("Content-Encoding", "")
+        if enc == "gzip":
+            raw = gzip_mod.decompress(raw)
         return raw.decode("utf-8", errors="replace")
  
 def p_num(s):
-    """'1.013' o '1013,98' → float"""
-    if not s:
-        return None
-    s = s.strip().replace("\xa0", "").replace(" ", "")
-    # formato español: punto=miles, coma=decimal
-    if re.match(r'^\d{1,3}(\.\d{3})+(,\d+)?$', s):
-        s = s.replace(".", "").replace(",", ".")
-    elif "," in s:
-        s = s.replace(",", ".")
-    try:
-        return float(s)
-    except ValueError:
-        return None
+    if not s: return None
+    s = s.strip().replace("\xa0","").replace(" ","")
+    # 1.705 (miles con punto, sin decimal) → 1705
+    if re.match(r'^\d{1,3}(\.\d{3})+$', s):
+        s = s.replace(".","")
+    # 1.013,45 → 1013.45
+    elif re.match(r'^\d{1,3}(\.\d{3})+(,\d+)?$', s):
+        s = s.replace(".","").replace(",",".")
+    else:
+        s = s.replace(",",".")
+    try: return float(s)
+    except: return None
  
-def scrape_pantano(url):
-    """
-    Scrape una página individual de embalse.
-    Extrae nombre, capacidad, hm3 actual, hace 1 año, media 10 años.
-    """
+def scrape_cuenca(slug):
+    """Devuelve lista de (id, url_completa) de pantanos en la cuenca."""
+    url = f"{BASE}/{slug}"
     try:
         html = fetch(url)
     except Exception as e:
+        print(f"  Error {slug}: {e}")
+        return []
+    # Las URLs en las páginas de cuenca son del tipo:
+    # href="/pantano-931-buendia.html" o href="pantano-931-buendia.html"
+    matches = re.findall(
+        r'href=["\'](?:https?://www\.embalses\.net)?(/pantano-(\d+)-[^"\']+\.html)["\']',
+        html)
+    seen = {}
+    for path, pid in matches:
+        if pid not in seen:
+            seen[pid] = f"{BASE}{path}"
+    return list(seen.items())  # [(id_str, url), ...]
+ 
+def scrape_pantano(pid, url):
+    try:
+        html = fetch(url)
+    except Exception:
         return None
  
-    # Nombre: primer h1 o título de la página
-    nombre_m = re.search(r'Embalse:\s*([^(<\n]+?)(?:\s*\(Tiempo Real\))?[\s\n]*(?:</h|$)', html)
+    # Nombre: buscar "Embalse: NombreXxx" en el texto
+    nombre_m = re.search(r'Embalse:\s*([^\n(<]+?)(?:\s*\(Tiempo Real\)|\s*\(Caudal)', html)
     if not nombre_m:
         nombre_m = re.search(r'<h1[^>]*>(?:Pantano|Embalse|Presa)\s+([^<]+)</h1>', html, re.I)
     if not nombre_m:
         return None
     nombre = nombre_m.group(1).strip()
  
-    # Los datos están así en el HTML (verificado):
-    # Agua embalsada (DD-MM-YYYY): <b>1.013</b> hm3
-    # Capacidad: 1.705 hm3
-    # Misma Semana (2024): 661 hm3
-    # Misma Semana (Med. 10 Años): 390 hm3
- 
+    # Agua embalsada: número en negrita seguido de hm3
+    # HTML real: **1.013**\n\n**hm3**
     agua_m = re.search(
-        r'Agua embalsada[^:]*:\s*<[^>]+>\s*([\d.,]+)\s*</[^>]+>\s*(?:<[^>]+>\s*)?\n?\s*hm',
+        r'Agua embalsada[^:]*:\*{0,2}\s*\n?\s*\*{0,2}([\d.,]+)\*{0,2}\s*\n?\s*\*{0,2}\s*\n?\s*hm',
         html, re.I)
     if not agua_m:
-        # fallback: buscar el número grande en negrita seguido de hm3
-        agua_m = re.search(r'<strong>\s*([\d.,]+)\s*</strong>\s*\n?\s*(?:<[^>]*>\s*)*hm3?\b', html, re.I)
+        # Buscar patrón en el markdown renderizado: número solo, luego hm3
+        agua_m = re.search(
+            r'\*\*([\d.,]+)\*\*\s*\n+\s*\*\*hm3?\*\*',
+            html)
     if not agua_m:
-        agua_m = re.search(r'([\d]{3,}(?:[.,]\d+)?)\s*\n\s*(?:<[^>]*>\n\s*)?hm3?\b', html)
+        agua_m = re.search(r'([\d]{3,}(?:[.,]\d+)?)\s*\n\s*hm3\b', html)
  
     cap_m   = re.search(r'Capacidad:\s*\n?\s*([\d.,]+)\s*\n?\s*hm', html, re.I)
     hace_m  = re.search(r'Misma Semana \(\d{4}\):\s*\n?\s*([\d.,]+)\s*\n?\s*hm', html, re.I)
@@ -275,54 +282,34 @@ def scrape_pantano(url):
         "fecha":     TODAY,
     }
  
-def scrape_cuenca(slug):
-    """
-    Scrape la página de una cuenca para obtener la lista de IDs de pantanos.
-    """
-    url = f"{BASE}/{slug}"
-    try:
-        html = fetch(url)
-    except Exception as e:
-        print(f"  Error {slug}: {e}")
-        return []
- 
-    # Buscar todos los enlaces a pantanos: /pantano-{id}-{slug}.html
-    ids = re.findall(r'href=["\'](?:https?://www\.embalses\.net)?/pantano-(\d+)-[^"\']+\.html["\']', html)
-    return list(dict.fromkeys(int(i) for i in ids))  # únicos, orden preservado
- 
 def main():
     print("Obteniendo lista de embalses por cuencas…")
-    all_ids = []
+    all_pantanos = {}  # id -> url
     for slug in CUENCAS_URLS:
-        ids = scrape_cuenca(slug)
-        print(f"  {slug}: {len(ids)} embalses")
-        all_ids.extend(ids)
+        items = scrape_cuenca(slug)
+        print(f"  {slug}: {len(items)} embalses")
+        for pid, url in items:
+            if pid not in all_pantanos:
+                all_pantanos[pid] = url
         time.sleep(1.5)
  
-    all_ids = list(dict.fromkeys(all_ids))
-    print(f"\nTotal IDs únicos: {len(all_ids)}")
- 
-    if not all_ids:
-        print("ERROR: No se encontraron IDs de embalses", file=sys.stderr)
+    print(f"\nTotal IDs únicos: {len(all_pantanos)}")
+    if not all_pantanos:
+        print("ERROR: No se encontraron IDs", file=sys.stderr)
         sys.exit(1)
  
     embalses = []
     nombres_vistos = set()
-    for i, pid in enumerate(all_ids):
-        if i % 25 == 0:
-            print(f"  Procesando {i}/{len(all_ids)}…")
-        url = f"{BASE}/pantano-{pid}-x.html"
-        # La URL exacta no importa, embalses.net redirige por ID
-        # Pero usamos la URL con el ID que sí funciona:
-        # Format real: /pantano-{id}-{slug}.html — buscamos el slug en el HTML de cuenca
-        # Como no lo tenemos, intentamos directamente con el ID
-        # embalses.net acepta /pantano-{id}.html como redirect
-        url = f"{BASE}/pantano-{pid}.html"
-        datos = scrape_pantano(url)
+    items = list(all_pantanos.items())
+ 
+    for i, (pid, url) in enumerate(items):
+        if i % 50 == 0:
+            print(f"  {i}/{len(items)} ({len(embalses)} obtenidos)…")
+        datos = scrape_pantano(pid, url)
         if datos and datos["nombre"] not in nombres_vistos:
             nombres_vistos.add(datos["nombre"])
             embalses.append(datos)
-        time.sleep(0.4)
+        time.sleep(0.35)
  
     if not embalses:
         print("ERROR: No se obtuvieron datos de ningún embalse", file=sys.stderr)
@@ -342,10 +329,9 @@ def main():
         json.dump(datos, f, ensure_ascii=False, indent=2)
  
     pct = round(total["hm3"] / total["capacidad"] * 100) if total["capacidad"] else 0
-    print(f"\n✓ datos.json generado")
-    print(f"  Embalses: {len(embalses)}")
+    print(f"\n✓ datos.json: {len(embalses)} embalses")
     print(f"  España: {total['hm3']} hm³ / {total['capacidad']} hm³ ({pct}%)")
-    print(f"  Fecha:  {TODAY}")
+    print(f"  Fecha: {TODAY}")
  
 if __name__ == "__main__":
     main()
